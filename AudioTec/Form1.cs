@@ -22,7 +22,15 @@ namespace AudioTec
 
         }
 
+        //prueba de si se sube bien los cambios 
+        private void button4_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Hola mundo");
+        }
 
-      
+        
+         
+
+
     }
 }
