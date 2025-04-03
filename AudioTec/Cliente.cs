@@ -12,6 +12,7 @@ namespace AudioTec
         public int dni { get; set; }
         public String direccion { get; set; }
         public int telefono { get; set; }
+        public DateTime fechaLlegada { get; set; }
 
         public Cliente(String nombre, int dni,String direccion,int telefono)
         {
@@ -19,6 +20,7 @@ namespace AudioTec
             this.dni = dni;
             this.direccion = direccion;
             this.telefono = telefono;
+            this.fechaLlegada = DateTime.Now;
         
         }
 

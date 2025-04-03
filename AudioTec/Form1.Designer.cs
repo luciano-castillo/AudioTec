@@ -36,15 +36,15 @@
             this.guardarComoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonIdentificacion = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonReparaciones = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.buttonNuevo = new System.Windows.Forms.Button();
             this.buttonActualizar = new System.Windows.Forms.Button();
             this.buttonEliminar = new System.Windows.Forms.Button();
             this.buttonBuscar = new System.Windows.Forms.Button();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -63,11 +63,28 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
+            this.panelContenedor = new System.Windows.Forms.Panel();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.textBoxArticulo = new System.Windows.Forms.TextBox();
+            this.textBoxMarca = new System.Windows.Forms.TextBox();
+            this.textBoxModelo = new System.Windows.Forms.TextBox();
+            this.textBoxObservaciones = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.textBoxNroOrden = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.textBoxRecepcion = new System.Windows.Forms.TextBox();
+            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.buttonGuardarCliente = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
+            this.tableLayoutPanel4.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -118,9 +135,9 @@
             // toolStrip1
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButton1,
+            this.toolStripButtonIdentificacion,
             this.toolStripSeparator1,
-            this.toolStripButton2,
+            this.toolStripButtonReparaciones,
             this.toolStripSeparator2});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
@@ -128,31 +145,38 @@
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
             // 
-            // toolStripButton1
+            // toolStripButtonIdentificacion
             // 
-            this.toolStripButton1.AutoSize = false;
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Margin = new System.Windows.Forms.Padding(1, 1, 1, 2);
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(70, 60);
-            this.toolStripButton1.Text = "toolStripButton1";
+            this.toolStripButtonIdentificacion.AutoSize = false;
+            this.toolStripButtonIdentificacion.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonIdentificacion.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonIdentificacion.Image")));
+            this.toolStripButtonIdentificacion.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonIdentificacion.Margin = new System.Windows.Forms.Padding(1, 1, 1, 2);
+            this.toolStripButtonIdentificacion.Name = "toolStripButtonIdentificacion";
+            this.toolStripButtonIdentificacion.Size = new System.Drawing.Size(70, 60);
+            this.toolStripButtonIdentificacion.Text = "toolStripButton1";
+            this.toolStripButtonIdentificacion.Click += new System.EventHandler(this.toolStripButtonIdentificacion_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 63);
             // 
-            // toolStripButton2
+            // toolStripButtonReparaciones
             // 
-            this.toolStripButton2.AutoSize = false;
-            this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
-            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton2.Name = "toolStripButton2";
-            this.toolStripButton2.Size = new System.Drawing.Size(70, 60);
-            this.toolStripButton2.Text = "toolStripButton2";
+            this.toolStripButtonReparaciones.AutoSize = false;
+            this.toolStripButtonReparaciones.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonReparaciones.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonReparaciones.Image")));
+            this.toolStripButtonReparaciones.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonReparaciones.Name = "toolStripButtonReparaciones";
+            this.toolStripButtonReparaciones.Size = new System.Drawing.Size(70, 60);
+            this.toolStripButtonReparaciones.Text = "toolStripButton2";
+            this.toolStripButtonReparaciones.Click += new System.EventHandler(this.toolStripButtonReparaciones_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 63);
             // 
             // tableLayoutPanel1
             // 
@@ -182,6 +206,7 @@
             this.buttonNuevo.TabIndex = 0;
             this.buttonNuevo.Text = "Nuevo";
             this.buttonNuevo.UseVisualStyleBackColor = true;
+            this.buttonNuevo.Click += new System.EventHandler(this.buttonNuevo_Click);
             // 
             // buttonActualizar
             // 
@@ -217,11 +242,7 @@
             this.buttonBuscar.TabIndex = 4;
             this.buttonBuscar.Text = "Buscar";
             this.buttonBuscar.UseVisualStyleBackColor = true;
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 63);
+            this.buttonBuscar.Click += new System.EventHandler(this.buttonBuscar_Click);
             // 
             // label1
             // 
@@ -329,7 +350,7 @@
             this.tableLayoutPanel3.Controls.Add(this.textBoxDni, 0, 1);
             this.tableLayoutPanel3.Controls.Add(this.textBoxTelefono, 0, 2);
             this.tableLayoutPanel3.Controls.Add(this.textBoxDireccion, 0, 3);
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(119, 130);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(116, 171);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 4;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
@@ -382,7 +403,7 @@
             // label5
             // 
             this.label5.Font = new System.Drawing.Font("Modern No. 20", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(13, 133);
+            this.label5.Location = new System.Drawing.Point(13, 171);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(78, 23);
             this.label5.TabIndex = 9;
@@ -392,7 +413,7 @@
             // label6
             // 
             this.label6.Font = new System.Drawing.Font("Modern No. 20", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(12, 166);
+            this.label6.Location = new System.Drawing.Point(12, 204);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(78, 23);
             this.label6.TabIndex = 10;
@@ -402,7 +423,7 @@
             // label7
             // 
             this.label7.Font = new System.Drawing.Font("Modern No. 20", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(13, 199);
+            this.label7.Location = new System.Drawing.Point(13, 237);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(78, 23);
             this.label7.TabIndex = 11;
@@ -412,18 +433,186 @@
             // label8
             // 
             this.label8.Font = new System.Drawing.Font("Modern No. 20", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(13, 232);
+            this.label8.Location = new System.Drawing.Point(13, 270);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(78, 23);
             this.label8.TabIndex = 12;
             this.label8.Text = "Direccion";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // panelContenedor
+            // 
+            this.panelContenedor.Location = new System.Drawing.Point(908, 577);
+            this.panelContenedor.Name = "panelContenedor";
+            this.panelContenedor.Size = new System.Drawing.Size(266, 100);
+            this.panelContenedor.TabIndex = 13;
+            // 
+            // label10
+            // 
+            this.label10.Font = new System.Drawing.Font("Modern No. 20", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Location = new System.Drawing.Point(12, 404);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(78, 23);
+            this.label10.TabIndex = 16;
+            this.label10.Text = "Modelo";
+            this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label11
+            // 
+            this.label11.Font = new System.Drawing.Font("Modern No. 20", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.Location = new System.Drawing.Point(11, 371);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(78, 23);
+            this.label11.TabIndex = 15;
+            this.label11.Text = "Marca";
+            this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label12
+            // 
+            this.label12.Font = new System.Drawing.Font("Modern No. 20", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label12.Location = new System.Drawing.Point(12, 338);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(78, 23);
+            this.label12.TabIndex = 14;
+            this.label12.Text = "Articulo";
+            this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label9
+            // 
+            this.label9.Font = new System.Drawing.Font("Modern No. 20", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(11, 497);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(109, 43);
+            this.label9.TabIndex = 17;
+            this.label9.Text = "Observaciones";
+            this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // tableLayoutPanel4
+            // 
+            this.tableLayoutPanel4.ColumnCount = 1;
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel4.Controls.Add(this.textBoxArticulo, 0, 0);
+            this.tableLayoutPanel4.Controls.Add(this.textBoxMarca, 0, 1);
+            this.tableLayoutPanel4.Controls.Add(this.textBoxModelo, 0, 2);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(116, 338);
+            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
+            this.tableLayoutPanel4.RowCount = 3;
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(329, 103);
+            this.tableLayoutPanel4.TabIndex = 18;
+            // 
+            // textBoxArticulo
+            // 
+            this.textBoxArticulo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxArticulo.Location = new System.Drawing.Point(3, 3);
+            this.textBoxArticulo.Name = "textBoxArticulo";
+            this.textBoxArticulo.Size = new System.Drawing.Size(323, 20);
+            this.textBoxArticulo.TabIndex = 0;
+            // 
+            // textBoxMarca
+            // 
+            this.textBoxMarca.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxMarca.Location = new System.Drawing.Point(3, 37);
+            this.textBoxMarca.Name = "textBoxMarca";
+            this.textBoxMarca.Size = new System.Drawing.Size(323, 20);
+            this.textBoxMarca.TabIndex = 1;
+            // 
+            // textBoxModelo
+            // 
+            this.textBoxModelo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxModelo.Location = new System.Drawing.Point(3, 71);
+            this.textBoxModelo.Name = "textBoxModelo";
+            this.textBoxModelo.Size = new System.Drawing.Size(323, 20);
+            this.textBoxModelo.TabIndex = 2;
+            // 
+            // textBoxObservaciones
+            // 
+            this.textBoxObservaciones.Location = new System.Drawing.Point(119, 510);
+            this.textBoxObservaciones.Multiline = true;
+            this.textBoxObservaciones.Name = "textBoxObservaciones";
+            this.textBoxObservaciones.Size = new System.Drawing.Size(316, 106);
+            this.textBoxObservaciones.TabIndex = 19;
+            // 
+            // label13
+            // 
+            this.label13.Font = new System.Drawing.Font("Modern No. 20", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.Location = new System.Drawing.Point(13, 98);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(78, 40);
+            this.label13.TabIndex = 20;
+            this.label13.Text = "Nro de Orden";
+            this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // textBoxNroOrden
+            // 
+            this.textBoxNroOrden.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxNroOrden.Location = new System.Drawing.Point(97, 110);
+            this.textBoxNroOrden.Name = "textBoxNroOrden";
+            this.textBoxNroOrden.Size = new System.Drawing.Size(152, 20);
+            this.textBoxNroOrden.TabIndex = 21;
+            // 
+            // label14
+            // 
+            this.label14.Font = new System.Drawing.Font("Modern No. 20", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label14.Location = new System.Drawing.Point(281, 98);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(78, 40);
+            this.label14.TabIndex = 22;
+            this.label14.Text = "Fecha de Recepcion";
+            this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // textBoxRecepcion
+            // 
+            this.textBoxRecepcion.Location = new System.Drawing.Point(494, 145);
+            this.textBoxRecepcion.Name = "textBoxRecepcion";
+            this.textBoxRecepcion.Size = new System.Drawing.Size(138, 20);
+            this.textBoxRecepcion.TabIndex = 23;
+            // 
+            // dateTimePicker1
+            // 
+            this.dateTimePicker1.Location = new System.Drawing.Point(365, 107);
+            this.dateTimePicker1.Name = "dateTimePicker1";
+            this.dateTimePicker1.Size = new System.Drawing.Size(200, 20);
+            this.dateTimePicker1.TabIndex = 24;
+            // 
+            // buttonGuardarCliente
+            // 
+            this.buttonGuardarCliente.Location = new System.Drawing.Point(469, 577);
+            this.buttonGuardarCliente.Name = "buttonGuardarCliente";
+            this.buttonGuardarCliente.Size = new System.Drawing.Size(68, 40);
+            this.buttonGuardarCliente.TabIndex = 25;
+            this.buttonGuardarCliente.Text = "Guardar";
+            this.buttonGuardarCliente.UseVisualStyleBackColor = true;
+            this.buttonGuardarCliente.Click += new System.EventHandler(this.buttonGuardarCliente_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1207, 758);
+            this.Controls.Add(this.buttonGuardarCliente);
+            this.Controls.Add(this.dateTimePicker1);
+            this.Controls.Add(this.textBoxRecepcion);
+            this.Controls.Add(this.label14);
+            this.Controls.Add(this.textBoxNroOrden);
+            this.Controls.Add(this.label13);
+            this.Controls.Add(this.textBoxObservaciones);
+            this.Controls.Add(this.tableLayoutPanel4);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.label10);
+            this.Controls.Add(this.label11);
+            this.Controls.Add(this.label12);
+            this.Controls.Add(this.panelContenedor);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
@@ -453,6 +642,8 @@
             this.tableLayoutPanel2.PerformLayout();
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
+            this.tableLayoutPanel4.ResumeLayout(false);
+            this.tableLayoutPanel4.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -467,9 +658,9 @@
         private System.Windows.Forms.ToolStripMenuItem guardarComoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem editarToolStripMenuItem;
         private System.Windows.Forms.ToolStrip toolStrip1;
-        private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStripButton toolStripButtonIdentificacion;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripButton toolStripButton2;
+        private System.Windows.Forms.ToolStripButton toolStripButtonReparaciones;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Button buttonNuevo;
         private System.Windows.Forms.Button buttonActualizar;
@@ -494,6 +685,22 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Panel panelContenedor;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
+        private System.Windows.Forms.TextBox textBoxArticulo;
+        private System.Windows.Forms.TextBox textBoxMarca;
+        private System.Windows.Forms.TextBox textBoxModelo;
+        private System.Windows.Forms.TextBox textBoxObservaciones;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.TextBox textBoxNroOrden;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.TextBox textBoxRecepcion;
+        private System.Windows.Forms.DateTimePicker dateTimePicker1;
+        private System.Windows.Forms.Button buttonGuardarCliente;
     }
 }
 
