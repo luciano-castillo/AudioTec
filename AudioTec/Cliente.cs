@@ -6,21 +6,25 @@ using System.Threading.Tasks;
 
 namespace AudioTec
 {
-    internal class Cliente
+    public class Cliente
     {
         public String nombre { get; set; }
         public int dni { get; set; }
         public String direccion { get; set; }
-        public int telefono { get; set; }
+        public String telefono { get; set; }
+        public int nroOrden { get; set; }
+        public String articulo { get; set; }
+        public String modelo { get; set; }
+        public String marca { get; set; }
+        public String email { get; set; }
         public DateTime fechaLlegada { get; set; }
 
-        public Cliente(String nombre, int dni,String direccion,int telefono)
+        public Cliente(String nombre, int dni,String direccion,String telefono)
         {
             this.nombre = nombre;
             this.dni = dni;
             this.direccion = direccion;
             this.telefono = telefono;
-            this.fechaLlegada = DateTime.Now;
         
         }
 

@@ -59,6 +59,7 @@
             this.textBoxDni = new System.Windows.Forms.TextBox();
             this.textBoxTelefono = new System.Windows.Forms.TextBox();
             this.textBoxDireccion = new System.Windows.Forms.TextBox();
+            this.textBoxEmail = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
@@ -76,9 +77,9 @@
             this.label13 = new System.Windows.Forms.Label();
             this.textBoxNroOrden = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
-            this.textBoxRecepcion = new System.Windows.Forms.TextBox();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.buttonGuardarCliente = new System.Windows.Forms.Button();
+            this.label15 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -233,6 +234,7 @@
             this.buttonEliminar.TabIndex = 2;
             this.buttonEliminar.Text = "Eliminar";
             this.buttonEliminar.UseVisualStyleBackColor = true;
+            this.buttonEliminar.Click += new System.EventHandler(this.buttonEliminar_Click);
             // 
             // buttonBuscar
             // 
@@ -350,14 +352,16 @@
             this.tableLayoutPanel3.Controls.Add(this.textBoxDni, 0, 1);
             this.tableLayoutPanel3.Controls.Add(this.textBoxTelefono, 0, 2);
             this.tableLayoutPanel3.Controls.Add(this.textBoxDireccion, 0, 3);
+            this.tableLayoutPanel3.Controls.Add(this.textBoxEmail, 0, 4);
             this.tableLayoutPanel3.Location = new System.Drawing.Point(116, 171);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
-            this.tableLayoutPanel3.RowCount = 4;
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(329, 135);
+            this.tableLayoutPanel3.RowCount = 5;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(319, 178);
             this.tableLayoutPanel3.TabIndex = 8;
             // 
             // textBoxNombre
@@ -367,7 +371,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxNombre.Location = new System.Drawing.Point(3, 3);
             this.textBoxNombre.Name = "textBoxNombre";
-            this.textBoxNombre.Size = new System.Drawing.Size(323, 20);
+            this.textBoxNombre.Size = new System.Drawing.Size(313, 20);
             this.textBoxNombre.TabIndex = 0;
             // 
             // textBoxDni
@@ -375,9 +379,9 @@
             this.textBoxDni.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxDni.Location = new System.Drawing.Point(3, 36);
+            this.textBoxDni.Location = new System.Drawing.Point(3, 38);
             this.textBoxDni.Name = "textBoxDni";
-            this.textBoxDni.Size = new System.Drawing.Size(323, 20);
+            this.textBoxDni.Size = new System.Drawing.Size(313, 20);
             this.textBoxDni.TabIndex = 1;
             // 
             // textBoxTelefono
@@ -385,9 +389,9 @@
             this.textBoxTelefono.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxTelefono.Location = new System.Drawing.Point(3, 69);
+            this.textBoxTelefono.Location = new System.Drawing.Point(3, 73);
             this.textBoxTelefono.Name = "textBoxTelefono";
-            this.textBoxTelefono.Size = new System.Drawing.Size(323, 20);
+            this.textBoxTelefono.Size = new System.Drawing.Size(313, 20);
             this.textBoxTelefono.TabIndex = 2;
             // 
             // textBoxDireccion
@@ -395,49 +399,59 @@
             this.textBoxDireccion.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxDireccion.Location = new System.Drawing.Point(3, 102);
+            this.textBoxDireccion.Location = new System.Drawing.Point(3, 108);
             this.textBoxDireccion.Name = "textBoxDireccion";
-            this.textBoxDireccion.Size = new System.Drawing.Size(323, 20);
+            this.textBoxDireccion.Size = new System.Drawing.Size(313, 20);
             this.textBoxDireccion.TabIndex = 3;
+            // 
+            // textBoxEmail
+            // 
+            this.textBoxEmail.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxEmail.Location = new System.Drawing.Point(3, 143);
+            this.textBoxEmail.Name = "textBoxEmail";
+            this.textBoxEmail.Size = new System.Drawing.Size(313, 20);
+            this.textBoxEmail.TabIndex = 4;
             // 
             // label5
             // 
             this.label5.Font = new System.Drawing.Font("Modern No. 20", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(13, 171);
+            this.label5.Location = new System.Drawing.Point(13, 174);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(78, 23);
             this.label5.TabIndex = 9;
-            this.label5.Text = "Nombre";
+            this.label5.Text = "Nombre*";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label6
             // 
             this.label6.Font = new System.Drawing.Font("Modern No. 20", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(12, 204);
+            this.label6.Location = new System.Drawing.Point(11, 209);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(78, 23);
             this.label6.TabIndex = 10;
-            this.label6.Text = "Dni";
+            this.label6.Text = "Dni*";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label7
             // 
             this.label7.Font = new System.Drawing.Font("Modern No. 20", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(13, 237);
+            this.label7.Location = new System.Drawing.Point(13, 244);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(78, 23);
             this.label7.TabIndex = 11;
-            this.label7.Text = "Telefono";
+            this.label7.Text = "Telefono*";
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label8
             // 
             this.label8.Font = new System.Drawing.Font("Modern No. 20", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(13, 270);
+            this.label8.Location = new System.Drawing.Point(13, 279);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(78, 23);
             this.label8.TabIndex = 12;
-            this.label8.Text = "Direccion";
+            this.label8.Text = "Direccion*";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // panelContenedor
@@ -450,7 +464,7 @@
             // label10
             // 
             this.label10.Font = new System.Drawing.Font("Modern No. 20", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(12, 404);
+            this.label10.Location = new System.Drawing.Point(12, 432);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(78, 23);
             this.label10.TabIndex = 16;
@@ -460,7 +474,7 @@
             // label11
             // 
             this.label11.Font = new System.Drawing.Font("Modern No. 20", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(11, 371);
+            this.label11.Location = new System.Drawing.Point(11, 399);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(78, 23);
             this.label11.TabIndex = 15;
@@ -470,7 +484,7 @@
             // label12
             // 
             this.label12.Font = new System.Drawing.Font("Modern No. 20", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.Location = new System.Drawing.Point(12, 338);
+            this.label12.Location = new System.Drawing.Point(12, 366);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(78, 23);
             this.label12.TabIndex = 14;
@@ -494,7 +508,7 @@
             this.tableLayoutPanel4.Controls.Add(this.textBoxArticulo, 0, 0);
             this.tableLayoutPanel4.Controls.Add(this.textBoxMarca, 0, 1);
             this.tableLayoutPanel4.Controls.Add(this.textBoxModelo, 0, 2);
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(116, 338);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(116, 366);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 3;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
@@ -571,18 +585,11 @@
             this.label14.Text = "Fecha de Recepcion";
             this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // textBoxRecepcion
-            // 
-            this.textBoxRecepcion.Location = new System.Drawing.Point(494, 145);
-            this.textBoxRecepcion.Name = "textBoxRecepcion";
-            this.textBoxRecepcion.Size = new System.Drawing.Size(138, 20);
-            this.textBoxRecepcion.TabIndex = 23;
-            // 
             // dateTimePicker1
             // 
             this.dateTimePicker1.Location = new System.Drawing.Point(365, 107);
             this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(200, 20);
+            this.dateTimePicker1.Size = new System.Drawing.Size(210, 20);
             this.dateTimePicker1.TabIndex = 24;
             // 
             // buttonGuardarCliente
@@ -595,14 +602,24 @@
             this.buttonGuardarCliente.UseVisualStyleBackColor = true;
             this.buttonGuardarCliente.Click += new System.EventHandler(this.buttonGuardarCliente_Click);
             // 
+            // label15
+            // 
+            this.label15.Font = new System.Drawing.Font("Modern No. 20", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label15.Location = new System.Drawing.Point(13, 314);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(78, 23);
+            this.label15.TabIndex = 26;
+            this.label15.Text = "Email";
+            this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1207, 758);
+            this.Controls.Add(this.label15);
             this.Controls.Add(this.buttonGuardarCliente);
             this.Controls.Add(this.dateTimePicker1);
-            this.Controls.Add(this.textBoxRecepcion);
             this.Controls.Add(this.label14);
             this.Controls.Add(this.textBoxNroOrden);
             this.Controls.Add(this.label13);
@@ -698,9 +715,10 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.TextBox textBoxNroOrden;
         private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.TextBox textBoxRecepcion;
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.Button buttonGuardarCliente;
+        private System.Windows.Forms.TextBox textBoxEmail;
+        private System.Windows.Forms.Label label15;
     }
 }
 
