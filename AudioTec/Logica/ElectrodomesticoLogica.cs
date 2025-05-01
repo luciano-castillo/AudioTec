@@ -29,14 +29,14 @@ namespace AudioTec.Logica
         }
 
         // Traer los electrodomesticos de una orden en una lista
-        public List<Electrodomestico> TraerElectrodomesticos(Orden obj)
+        public static List<Electrodomestico> TraerElectrodomesticos(Orden obj)
         {
             List<Electrodomestico> lista = new List<Electrodomestico>();
 
             using (SQLiteConnection con = new SQLiteConnection(Conexion.cadena))
             {
                 con.Open();
-                string query = "SELECT e.ElectrodomesticoID, e.Articulo, e.Modelo, e.Marca, e.Observacion" +
+                string query = "SELECT e.ElectrodomesticoID, e.Articulo, e.Modelo, e.Marca, e.Observacion e.ClienteDNI" +
                     "FROM Orden_Electrodomestico oe" +
                     "JOIN Electrodomestico e ON (oe.ElectrodomesticoID = e.ElectrodomesticoID)" +
                     "WHERE oe.OrdenID = @nroOrden";
@@ -44,26 +44,75 @@ namespace AudioTec.Logica
                 SQLiteCommand cmd = new SQLiteCommand(query, con);
                 cmd.Parameters.Add(new SQLiteParameter("@nroOrden", obj.OrdenID));
 
-                if (cmd.ExecuteNonQuery() > 0)
+                using (SQLiteDataReader reader = cmd.ExecuteReader())
                 {
-                    using (SQLiteDataReader reader = cmd.ExecuteReader())
+                    while (reader.Read())
                     {
-                        while (reader.Read())
+                        lista.Add(new Electrodomestico()
                         {
-                            lista.Add(new Electrodomestico()
-                            {
-                                ElectrodomesticoID = reader["ElectrodomesticoID"].ToString(),
-                                Articulo = reader["Articulo"].ToString(),
-                                Modelo = reader["Modelo"].ToString(),
-                                Marca = reader["Marca"].ToString(),
-                                Observacion = reader["Observacion"].ToString()
-                            });
-                        }
+                            ElectrodomesticoID = reader["ElectrodomesticoID"].ToString(),
+                            Articulo = reader["Articulo"].ToString(),
+                            Modelo = reader["Modelo"].ToString(),
+                            Marca = reader["Marca"].ToString(),
+                            Observacion = reader["Observacion"].ToString(),
+                            Dueno = ClienteLogica.TraerCliente(reader["ClienteDNI"].ToString())
+                            
+                        });
                     }
                 }
+
             }
 
             return lista;
+        }
+
+        // Guardar electrodomestico
+        public static bool GuardarElectrodomestico(Electrodomestico obj)
+        {
+            bool respuesta = true;
+
+            using (SQLiteConnection con = new SQLiteConnection(Conexion.cadena))
+            {
+                con.Open();
+                string query = "insert into Electrodomestico (ClienteDNI, Articulo, Modelo, Marca, Observacion)" +
+                    "Values (@clientedni, @articulo, @modelo, @marca, @observacion)";
+
+                SQLiteCommand cmd = new SQLiteCommand(query, con);
+                cmd.Parameters.Add(new SQLiteParameter("@clientedni", obj.Dueno.DNI));
+                cmd.Parameters.Add(new SQLiteParameter("@articulo", obj.Articulo));
+                cmd.Parameters.Add(new SQLiteParameter("@modelo", obj.Modelo));
+                cmd.Parameters.Add(new SQLiteParameter("@marca", obj.Marca));
+                cmd.Parameters.Add(new SQLiteParameter("@observacion", obj.Observacion));
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                if (cmd.ExecuteNonQuery() < 1)
+                {
+                    respuesta = false;
+                }
+
+            }
+
+            return respuesta;
+        }
+
+        // Comprueba si ya existe un electrodomestico
+        public static bool Existe(string id)
+        {
+            bool respuesta = false;
+
+            using (SQLiteConnection con = new SQLiteConnection(Conexion.cadena))
+            {
+                con.Open();
+                string query = "SELECT COUNT(*) FROM Electrodomestico WHERE ElectrodomesticoID = @id";
+
+                SQLiteCommand cmd = new SQLiteCommand(query, con);
+                cmd.Parameters.Add(new SQLiteParameter("@id", id));
+
+                int cantidad = Convert.ToInt32(cmd.ExecuteScalar());
+                respuesta = cantidad > 0;
+            }
+
+            return respuesta;
         }
 
     }

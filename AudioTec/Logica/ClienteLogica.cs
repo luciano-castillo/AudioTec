@@ -34,20 +34,21 @@ namespace AudioTec.Logica
         }
 
 
-        public bool Guardar(Cliente obj)
+        public static bool Guardar(Cliente obj)
         {
             bool respuesta = true;
 
             using(SQLiteConnection con = new SQLiteConnection(Conexion.cadena))
             {
                 con.Open();
-                string query = "insert into Cliente(DNI,Nombre,Direccion,Telefono) values (@dni,@nombre,@direccion,@telefono)";
+                string query = "insert into Cliente(DNI,Nombre,Direccion,Telefono,Email) values (@dni,@nombre,@direccion,@telefono,@email)";
 
                 SQLiteCommand cmd = new SQLiteCommand(query, con);
                 cmd.Parameters.Add(new SQLiteParameter("@dni", obj.DNI));
                 cmd.Parameters.Add(new SQLiteParameter("@nombre", obj.Nombre));
                 cmd.Parameters.Add(new SQLiteParameter("@direccion", obj.Direccion));
                 cmd.Parameters.Add(new SQLiteParameter("@telefono", obj.Telefono));
+                cmd.Parameters.Add(new SQLiteParameter("@email", obj.Email));
                 cmd.CommandType = System.Data.CommandType.Text;
 
                 if (cmd.ExecuteNonQuery() < 1)
@@ -62,7 +63,7 @@ namespace AudioTec.Logica
         }
 
         // Trae todos los clientes
-        public List<Cliente> Listar()
+        public static List<Cliente> Listar()
         {
             List<Cliente> lista = new List<Cliente>();
 
@@ -83,6 +84,7 @@ namespace AudioTec.Logica
                             Nombre = reader["Nombre"].ToString(),
                             Direccion = reader["Direccion"].ToString(),
                             Telefono = reader["Telefono"].ToString(),
+                            Email = reader["email"].ToString(),
                         });
                     }
                 }
@@ -94,7 +96,7 @@ namespace AudioTec.Logica
         }
 
         // modificar
-        public bool Editar(Cliente obj)
+        public static bool Editar(Cliente obj)
         {
             bool respuesta = true;
 
@@ -102,7 +104,7 @@ namespace AudioTec.Logica
             {
                 con.Open();
                 string query = "update Cliente " +
-                    "set DNI = @dni, Nombre = @nombre, Direccion = @direccion, Telefono = @telefono" +
+                    "set DNI = @dni, Nombre = @nombre, Direccion = @direccion, Telefono = @telefono, Email = @email" +
                     "where DNI = @dni";
 
                 SQLiteCommand cmd = new SQLiteCommand(query, con);
@@ -110,6 +112,7 @@ namespace AudioTec.Logica
                 cmd.Parameters.Add(new SQLiteParameter("@nombre", obj.Nombre));
                 cmd.Parameters.Add(new SQLiteParameter("@direccion", obj.Direccion));
                 cmd.Parameters.Add(new SQLiteParameter("@telefono", obj.Telefono));
+                cmd.Parameters.Add(new SQLiteParameter("@enail", obj.Email));
                 cmd.CommandType = System.Data.CommandType.Text;
 
                 if (cmd.ExecuteNonQuery() < 1)
@@ -123,14 +126,14 @@ namespace AudioTec.Logica
 
 
         // Trae un cliente asociado a una orden
-        public Cliente TraerCliente(Orden obj)
+        public static Cliente TraerCliente(Orden obj)
         {
             Cliente cliente = new Cliente();
 
             using (SQLiteConnection con = new SQLiteConnection(Conexion.cadena))
             {
                 con.Open();
-                string query = "SELECT c.DNI, c.Nombre. Direccion, c.Telefono" +
+                string query = "SELECT c.DNI, c.Nombre, c.Direccion, c.Telefono, c.Email" +
                     "FROM Orden o" +
                     "JOIN Cliente c ON (o.ClienteDNI = c.DNI)" +
                     "Where o.OrdenID = @OrdenID";
@@ -139,21 +142,116 @@ namespace AudioTec.Logica
                 cmd.Parameters.Add(new SQLiteParameter("@OrdenID", obj.OrdenID));
                 cmd.CommandType = System.Data.CommandType.Text;
 
-                if (cmd.ExecuteNonQuery() > 0)
+                using (SQLiteDataReader reader = cmd.ExecuteReader())
                 {
 
-                    using (SQLiteDataReader reader = cmd.ExecuteReader())
+                    if (reader.Read())
                     {
                         cliente.DNI = reader["DNI"].ToString();
                         cliente.Nombre = reader["Nombre"].ToString();
                         cliente.Direccion = reader["Direccion"].ToString();
                         cliente.Telefono = reader["Telefono"].ToString();
+                        cliente.Email = reader["email"].ToString();
                     }
 
                 }
+
             }
 
             return cliente;
+        }
+
+        // Traer cliente por su DNI
+        public static Cliente TraerCliente(string dni)
+        {
+
+            Cliente cliente = new Cliente();
+
+            using (SQLiteConnection con = new SQLiteConnection(Conexion.cadena))
+            {
+                con.Open();
+                string query = "SELECT DNI, Nombre, Direccion, Telefono, Email" +
+                    "FROM Cliente" +
+                    "Where DNI = @dni";
+
+                SQLiteCommand cmd = new SQLiteCommand(query, con);
+                cmd.Parameters.Add(new SQLiteParameter("@dni", dni));
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                using (SQLiteDataReader reader = cmd.ExecuteReader())
+                {
+
+                    if (reader.Read())
+                    {
+                        cliente.DNI = reader["DNI"].ToString();
+                        cliente.Nombre = reader["Nombre"].ToString();
+                        cliente.Direccion = reader["Direccion"].ToString();
+                        cliente.Telefono = reader["Telefono"].ToString();
+                        cliente.Email = reader["email"].ToString();
+                    }
+                    
+                }
+
+            }
+
+            return cliente;
+        }
+
+        // Traer cliente por el ordenId asociado
+        public static Cliente TraerCliente(int nroOrden)
+        {
+
+            Cliente cliente = new Cliente();
+
+            using (SQLiteConnection con = new SQLiteConnection(Conexion.cadena))
+            {
+                con.Open();
+                string query = "SELECT c.DNI, c.Nombre, c.Direccion, c.Telefono, c.Email" +
+                    "FROM Cliente c" +
+                    "INNER JOIN Orden o ON c.DNI = o.ClienteDNI" +
+                    "Where o.OrdenID = @nroOrden";
+
+                SQLiteCommand cmd = new SQLiteCommand(query, con);
+                cmd.Parameters.Add(new SQLiteParameter("@nroOrden", nroOrden));
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                using (SQLiteDataReader reader = cmd.ExecuteReader())
+                {
+
+                    if (reader.Read())
+                    {
+                        cliente.DNI = reader["DNI"].ToString();
+                        cliente.Nombre = reader["Nombre"].ToString();
+                        cliente.Direccion = reader["Direccion"].ToString();
+                        cliente.Telefono = reader["Telefono"].ToString();
+                        cliente.Email = reader["email"].ToString();
+                    }
+
+                }
+
+            }
+
+            return cliente;
+        }
+
+        // Comprobar si cliente existe
+        public static bool Existe(string dni)
+        {
+            bool respuesta = false;
+
+            using (SQLiteConnection con = new SQLiteConnection(Conexion.cadena))
+            {
+                con.Open();
+                string query = "SELECT COUNT(*) FROM Cliente WHERE DNI = @dni";
+
+                SQLiteCommand cmd = new SQLiteCommand(query, con);
+                cmd.Parameters.Add(new SQLiteParameter("@dni",dni));
+
+                int cantidad = Convert.ToInt32(cmd.ExecuteScalar());
+                respuesta = cantidad > 0;
+            }
+
+            return respuesta;
         }
     }
 }

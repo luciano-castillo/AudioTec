@@ -66,8 +66,18 @@ namespace AudioTec
                         doc.Add(new iTextSharp.text.Paragraph("Articulo: "+ ClienteActual.articulo));
                         doc.Add(new iTextSharp.text.Paragraph("Marca: "+ClienteActual.marca));
                         doc.Add(new iTextSharp.text.Paragraph("Modelo: " + ClienteActual.modelo));
-                        
 
+                        // En esta parte en ves de sacar los datos directamente del cliente deberia de ser de la orden
+                        /* Ejemplo
+                        doc.Add(new iTextSharp.text.Paragraph("Nombre: " + Orden.Cliente.Nombre));
+                        doc.Add(new iTextSharp.text.Paragraph("DNI: " + Orden.Cliente.DNI));
+                        doc.Add(new iTextSharp.text.Paragraph("Teléfono: " + Orden.Cliente.Telefono));
+                        doc.Add(new iTextSharp.text.Paragraph("Dirección: " + Orden.Cliente.Direccion));
+                        doc.Add(new iTextSharp.text.Paragraph("Fecha de llegada: " + Orden.Fecha_reparacion.ToShortDateString()));
+                        doc.Add(new iTextSharp.text.Paragraph("Articulo: " + Orden.Electrodomestico.Articulo));
+                        doc.Add(new iTextSharp.text.Paragraph("Marca: " + Orden.Electrodomestico.Articulo));
+                        doc.Add(new iTextSharp.text.Paragraph("Modelo: " + Orden.Electrodomestico.Articulo));
+                        */
 
                         // Los datos de reparación, repuestos, etc.
                         doc.Add(new iTextSharp.text.Paragraph($"{textBoxDatosRep.Text}"));
