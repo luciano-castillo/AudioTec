@@ -36,7 +36,7 @@ namespace AudioTec.Logica
             using (SQLiteConnection con = new SQLiteConnection(Conexion.cadena))
             {
                 con.Open();
-                string query = "SELECT e.ElectrodomesticoID, e.Articulo, e.Modelo, e.Marca, e.Observacion e.ClienteDNI" +
+                string query = "SELECT e.ElectrodomesticoID, e.Articulo, e.Modelo, e.Marca, e.Observacion, e.ClienteDNI" +
                     "FROM Orden_Electrodomestico oe" +
                     "JOIN Electrodomestico e ON (oe.ElectrodomesticoID = e.ElectrodomesticoID)" +
                     "WHERE oe.OrdenID = @nroOrden";

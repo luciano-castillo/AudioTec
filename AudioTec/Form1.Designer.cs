@@ -80,12 +80,14 @@
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.buttonGuardarCliente = new System.Windows.Forms.Button();
             this.label15 = new System.Windows.Forms.Label();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -221,6 +223,7 @@
             this.buttonActualizar.TabIndex = 1;
             this.buttonActualizar.Text = "Actualizar";
             this.buttonActualizar.UseVisualStyleBackColor = true;
+            this.buttonActualizar.Click += new System.EventHandler(this.buttonActualizar_Click);
             // 
             // buttonEliminar
             // 
@@ -514,7 +517,7 @@
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(329, 103);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(319, 103);
             this.tableLayoutPanel4.TabIndex = 18;
             // 
             // textBoxArticulo
@@ -524,7 +527,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxArticulo.Location = new System.Drawing.Point(3, 3);
             this.textBoxArticulo.Name = "textBoxArticulo";
-            this.textBoxArticulo.Size = new System.Drawing.Size(323, 20);
+            this.textBoxArticulo.Size = new System.Drawing.Size(313, 20);
             this.textBoxArticulo.TabIndex = 0;
             // 
             // textBoxMarca
@@ -534,7 +537,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxMarca.Location = new System.Drawing.Point(3, 37);
             this.textBoxMarca.Name = "textBoxMarca";
-            this.textBoxMarca.Size = new System.Drawing.Size(323, 20);
+            this.textBoxMarca.Size = new System.Drawing.Size(313, 20);
             this.textBoxMarca.TabIndex = 1;
             // 
             // textBoxModelo
@@ -544,7 +547,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxModelo.Location = new System.Drawing.Point(3, 71);
             this.textBoxModelo.Name = "textBoxModelo";
-            this.textBoxModelo.Size = new System.Drawing.Size(323, 20);
+            this.textBoxModelo.Size = new System.Drawing.Size(313, 20);
             this.textBoxModelo.TabIndex = 2;
             // 
             // textBoxObservaciones
@@ -612,11 +615,20 @@
             this.label15.Text = "Email";
             this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // dataGridView1
+            // 
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(469, 171);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.Size = new System.Drawing.Size(240, 150);
+            this.dataGridView1.TabIndex = 27;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1207, 758);
+            this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.label15);
             this.Controls.Add(this.buttonGuardarCliente);
             this.Controls.Add(this.dateTimePicker1);
@@ -661,6 +673,7 @@
             this.tableLayoutPanel3.PerformLayout();
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -719,6 +732,7 @@
         private System.Windows.Forms.Button buttonGuardarCliente;
         private System.Windows.Forms.TextBox textBoxEmail;
         private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.DataGridView dataGridView1;
     }
 }
 

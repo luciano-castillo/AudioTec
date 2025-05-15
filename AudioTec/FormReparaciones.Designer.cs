@@ -39,6 +39,8 @@
             this.textBoxDatosRep = new System.Windows.Forms.TextBox();
             this.buttonGenerarComprobante = new System.Windows.Forms.Button();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.label6 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // label1
@@ -52,7 +54,7 @@
             // 
             // textBoxNroOrdenRep
             // 
-            this.textBoxNroOrdenRep.Location = new System.Drawing.Point(85, 60);
+            this.textBoxNroOrdenRep.Location = new System.Drawing.Point(305, 60);
             this.textBoxNroOrdenRep.Name = "textBoxNroOrdenRep";
             this.textBoxNroOrdenRep.Size = new System.Drawing.Size(100, 20);
             this.textBoxNroOrdenRep.TabIndex = 3;
@@ -60,7 +62,7 @@
             // label2
             // 
             this.label2.Font = new System.Drawing.Font("Modern No. 20", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(3, 57);
+            this.label2.Location = new System.Drawing.Point(223, 57);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(76, 22);
             this.label2.TabIndex = 4;
@@ -69,7 +71,7 @@
             // label3
             // 
             this.label3.Font = new System.Drawing.Font("Modern No. 20", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(219, 59);
+            this.label3.Location = new System.Drawing.Point(439, 59);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(65, 22);
             this.label3.TabIndex = 6;
@@ -77,7 +79,7 @@
             // 
             // textBoxNombreRep
             // 
-            this.textBoxNombreRep.Location = new System.Drawing.Point(290, 61);
+            this.textBoxNombreRep.Location = new System.Drawing.Point(510, 61);
             this.textBoxNombreRep.Name = "textBoxNombreRep";
             this.textBoxNombreRep.Size = new System.Drawing.Size(100, 20);
             this.textBoxNombreRep.TabIndex = 5;
@@ -85,7 +87,7 @@
             // label4
             // 
             this.label4.Font = new System.Drawing.Font("Modern No. 20", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(424, 61);
+            this.label4.Location = new System.Drawing.Point(644, 61);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(65, 22);
             this.label4.TabIndex = 8;
@@ -93,7 +95,7 @@
             // 
             // textBoxArticuloRep
             // 
-            this.textBoxArticuloRep.Location = new System.Drawing.Point(495, 63);
+            this.textBoxArticuloRep.Location = new System.Drawing.Point(715, 63);
             this.textBoxArticuloRep.Name = "textBoxArticuloRep";
             this.textBoxArticuloRep.Size = new System.Drawing.Size(100, 20);
             this.textBoxArticuloRep.TabIndex = 7;
@@ -101,7 +103,7 @@
             // label5
             // 
             this.label5.Font = new System.Drawing.Font("Modern No. 20", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(3, 120);
+            this.label5.Location = new System.Drawing.Point(54, 120);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(252, 25);
             this.label5.TabIndex = 9;
@@ -109,15 +111,15 @@
             // 
             // textBoxDatosRep
             // 
-            this.textBoxDatosRep.Location = new System.Drawing.Point(6, 148);
+            this.textBoxDatosRep.Location = new System.Drawing.Point(57, 148);
             this.textBoxDatosRep.Multiline = true;
             this.textBoxDatosRep.Name = "textBoxDatosRep";
-            this.textBoxDatosRep.Size = new System.Drawing.Size(589, 188);
+            this.textBoxDatosRep.Size = new System.Drawing.Size(416, 188);
             this.textBoxDatosRep.TabIndex = 10;
             // 
             // buttonGenerarComprobante
             // 
-            this.buttonGenerarComprobante.Location = new System.Drawing.Point(738, 576);
+            this.buttonGenerarComprobante.Location = new System.Drawing.Point(57, 583);
             this.buttonGenerarComprobante.Name = "buttonGenerarComprobante";
             this.buttonGenerarComprobante.Size = new System.Drawing.Size(80, 47);
             this.buttonGenerarComprobante.TabIndex = 11;
@@ -125,10 +127,29 @@
             this.buttonGenerarComprobante.UseVisualStyleBackColor = true;
             this.buttonGenerarComprobante.Click += new System.EventHandler(this.buttonGenerarComprobante_Click);
             // 
+            // label6
+            // 
+            this.label6.Font = new System.Drawing.Font("Modern No. 20", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(575, 120);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(81, 25);
+            this.label6.TabIndex = 12;
+            this.label6.Text = "Repuestos";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(578, 148);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(416, 188);
+            this.textBox1.TabIndex = 13;
+            // 
             // FormReparaciones
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.buttonGenerarComprobante);
             this.Controls.Add(this.textBoxDatosRep);
             this.Controls.Add(this.label5);
@@ -159,5 +180,7 @@
         private System.Windows.Forms.TextBox textBoxDatosRep;
         private System.Windows.Forms.Button buttonGenerarComprobante;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }

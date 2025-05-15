@@ -89,5 +89,10 @@ namespace AudioTec.Modelo
 
         }
 
+        public override string ToString()
+        {
+            return $"Orden N° {OrdenID} - {Cliente?.Nombre} - {Cliente?.DNI}";
+        }
+
     }
 }

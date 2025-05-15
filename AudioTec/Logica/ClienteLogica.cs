@@ -104,7 +104,7 @@ namespace AudioTec.Logica
             {
                 con.Open();
                 string query = "update Cliente " +
-                    "set DNI = @dni, Nombre = @nombre, Direccion = @direccion, Telefono = @telefono, Email = @email" +
+                    "set DNI = @dni, Nombre = @nombre, Direccion = @direccion, Telefono = @telefono, Email = @email " +
                     "where DNI = @dni";
 
                 SQLiteCommand cmd = new SQLiteCommand(query, con);
@@ -112,7 +112,7 @@ namespace AudioTec.Logica
                 cmd.Parameters.Add(new SQLiteParameter("@nombre", obj.Nombre));
                 cmd.Parameters.Add(new SQLiteParameter("@direccion", obj.Direccion));
                 cmd.Parameters.Add(new SQLiteParameter("@telefono", obj.Telefono));
-                cmd.Parameters.Add(new SQLiteParameter("@enail", obj.Email));
+                cmd.Parameters.Add(new SQLiteParameter("@email", obj.Email));
                 cmd.CommandType = System.Data.CommandType.Text;
 
                 if (cmd.ExecuteNonQuery() < 1)
@@ -170,8 +170,8 @@ namespace AudioTec.Logica
             using (SQLiteConnection con = new SQLiteConnection(Conexion.cadena))
             {
                 con.Open();
-                string query = "SELECT DNI, Nombre, Direccion, Telefono, Email" +
-                    "FROM Cliente" +
+                string query = "SELECT DNI, Nombre, Direccion, Telefono, Email " +
+                    "FROM Cliente " +
                     "Where DNI = @dni";
 
                 SQLiteCommand cmd = new SQLiteCommand(query, con);
@@ -206,9 +206,9 @@ namespace AudioTec.Logica
             using (SQLiteConnection con = new SQLiteConnection(Conexion.cadena))
             {
                 con.Open();
-                string query = "SELECT c.DNI, c.Nombre, c.Direccion, c.Telefono, c.Email" +
-                    "FROM Cliente c" +
-                    "INNER JOIN Orden o ON c.DNI = o.ClienteDNI" +
+                string query = "SELECT c.DNI, c.Nombre, c.Direccion, c.Telefono, c.Email " +
+                    "FROM Cliente c " +
+                    "INNER JOIN Orden o ON c.DNI = o.ClienteDNI " +
                     "Where o.OrdenID = @nroOrden";
 
                 SQLiteCommand cmd = new SQLiteCommand(query, con);
@@ -233,6 +233,41 @@ namespace AudioTec.Logica
 
             return cliente;
         }
+        //---------------------------------------------------
+
+        //Traer Cliente por nombre
+        public static List<Cliente> BuscarPorNombre(string nombre)
+        {
+            List<Cliente> lista = new List<Cliente>();
+
+            using (SQLiteConnection con = new SQLiteConnection(Conexion.cadena))
+            {
+                con.Open();
+                string query = "SELECT * FROM Cliente WHERE LOWER(Nombre) LIKE @nombre";
+
+                SQLiteCommand cmd = new SQLiteCommand(query, con);
+                cmd.Parameters.AddWithValue("@nombre", "%" + nombre.ToLower() + "%");
+
+                using (SQLiteDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        lista.Add(new Cliente
+                        {
+                            DNI = reader["DNI"].ToString(),
+                            Nombre = reader["Nombre"].ToString(),
+                            Direccion = reader["Direccion"].ToString(),
+                            Telefono = reader["Telefono"].ToString(),
+                            Email = reader["Email"].ToString()
+                        });
+                    }
+                }
+            }
+
+            return lista;
+        }
+
+        //---------------------------------------------------
 
         // Comprobar si cliente existe
         public static bool Existe(string dni)

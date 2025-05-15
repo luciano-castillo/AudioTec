@@ -5,7 +5,7 @@ using System.Data.SQLite;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Windows.Forms;
 using AudioTec.Modelo;
 
 namespace AudioTec.Logica
@@ -15,6 +15,7 @@ namespace AudioTec.Logica
 
 
         private static OrdenLogica _instancia = null;
+
 
         public OrdenLogica() { }
 
@@ -209,6 +210,48 @@ namespace AudioTec.Logica
 
         }
 
+        public static List<Orden> TraerOrdenes(){
+
+           List<Orden> ordenes = new List<Orden>();
+
+            using (SQLiteConnection con = new SQLiteConnection(Conexion.cadena))
+            {
+                con.Open();
+                string query = "SELECT o.OrdenID, o.Presupuesto, o.Fecha_reparacion, o.Fecha_retiro, o.Repuesto, " +
+               "c.DNI, c.Nombre " +
+               "FROM Orden o " +
+               "INNER JOIN Cliente c ON o.ClienteDNI = c.DNI";
+
+
+                SQLiteCommand cmd = new SQLiteCommand(query, con);
+                //cmd.CommandType = System.Data.CommandType.Text;
+
+                using (SQLiteDataReader reader = cmd.ExecuteReader())
+                {
+
+                    while (reader.Read())
+                    {
+                        int id = int.Parse(reader["OrdenID"].ToString());
+                        ordenes.Add(new Orden()
+                        {
+                            Cliente = ClienteLogica.TraerCliente(id),
+                            OrdenID = id,                            
+                            Presupuesto = int.Parse(reader["Presupuesto"].ToString()),
+                            Fecha_reparacion = reader["Fecha_reparacion"].ToString(),
+                            Fecha_retiro = reader["Fecha_retiro"].ToString(),
+                            Repuesto = reader["Repuesto"].ToString(),
+                            
+                        });
+
+                    }
+
+                }
+
+            }
+            
+            return ordenes; 
+        }
+
 
         // Dar por terminada una orden -- Pone la fecha actual a la orden
         public static bool TerminarOrden(Orden obj)
@@ -216,9 +259,9 @@ namespace AudioTec.Logica
             bool respuesta = true;
 
             using (SQLiteConnection con = new SQLiteConnection(Conexion.cadena))
-            {
+            {                
                 con.Open();
-                string query = "UPDATE Orden" +
+                string query = "UPDATE Orden " +//espacio
                     "SET Fecha_retiro = CURRENT_DATE" +
                     "WHERE OrdenID = @nroOrden";
 
@@ -241,10 +284,10 @@ namespace AudioTec.Logica
             bool respuesta = true;
 
             using (SQLiteConnection con = new SQLiteConnection(Conexion.cadena))
-            {
+            {                
                 con.Open();
-                string query = "UPDATE Orden" +
-                    "SET ClienteDNI = @ClienteDni, Presupuesto = @Presupuesto, Fecha_reaparacion = @fr, Fecha_retiro = @fretiro, Repuesto = @repuesto" +
+                string query = "UPDATE Orden " +//esapcio
+                    "SET ClienteDNI = @ClienteDni, Presupuesto = @Presupuesto, Fecha_reparacion = @fr, Fecha_retiro = @fretiro, Repuesto = @repuesto" +
                     "WHERE OrdenID = @ordenID";
 
                 SQLiteCommand cmd = new SQLiteCommand(query, con);
@@ -291,6 +334,39 @@ namespace AudioTec.Logica
 
                 return resultado;
         }
+
+        //Traer orden por Nro de DNI
+        public static Orden TraerNroOrden(string dni)
+        {
+            using (SQLiteConnection con = new SQLiteConnection(Conexion.cadena))
+            {
+                con.Open();
+                string query = "SELECT * FROM Orden WHERE ClienteDNI = @dni ORDER BY OrdenID DESC LIMIT 1";
+
+                SQLiteCommand cmd = new SQLiteCommand(query, con);
+                cmd.Parameters.AddWithValue("@dni", dni);
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        //int id = int.Parse(reader["OrdenID"].ToString());
+                        return new Orden
+                        {
+                            OrdenID = Convert.ToInt32(reader["OrdenID"]),
+                            //OrdenID = id,
+                            //Presupuesto = int.Parse(reader["Presupuesto"].ToString()),
+                            //Fecha_reparacion = reader["Fecha_reparacion"].ToString(),
+                            //Fecha_retiro = reader["Fecha_retiro"].ToString(),
+                            //Repuesto = reader["Repuesto"].ToString(),
+                            //Cliente = ClienteLogica.TraerCliente(id)
+                        };
+                    }
+                }
+            }
+            return null;
+        }
+
 
 
     }

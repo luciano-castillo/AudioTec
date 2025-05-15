@@ -7,6 +7,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AudioTec.Logica;
+using AudioTec.Modelo;
 using System.Windows.Forms;
 
 namespace AudioTec

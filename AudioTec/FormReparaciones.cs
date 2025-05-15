@@ -9,6 +9,8 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using AudioTec.Modelo;
+using AudioTec.Logica;
 using System.IO;
 
 namespace AudioTec
@@ -16,12 +18,15 @@ namespace AudioTec
     public partial class FormReparaciones : UserControl
     {
         private Cliente ClienteActual;
+        private Electrodomestico eletroActual;
+        private Orden ordenActual;
         public FormReparaciones(Cliente cliente)
         {
             InitializeComponent();
             this.ClienteActual = cliente;
-            textBoxNombreRep.Text = cliente.nombre;
-            textBoxArticuloRep.Text = cliente.articulo;
+            textBoxNombreRep.Text = cliente.Nombre;
+
+            //textBoxArticuloRep.Text = cliente.articulo;
         }
 
         private void FormReparaciones_Load(object sender, EventArgs e)
@@ -42,7 +47,7 @@ namespace AudioTec
             {
                 saveDialog.Filter = "PDF Files|*.pdf";
                 saveDialog.Title = "Guardar comprobante";
-                saveDialog.FileName = $"Comprobante {ClienteActual.nombre}-{ClienteActual.dni}.pdf";
+                saveDialog.FileName = $"Comprobante {ClienteActual.Nombre}-{ClienteActual.DNI}.pdf";
 
                 if (saveDialog.ShowDialog() == DialogResult.OK)
                 {
@@ -58,14 +63,15 @@ namespace AudioTec
                         //Datos del Cliente
                         doc.Add(new iTextSharp.text.Paragraph("COMPROBANTE DE REPARACIÓN - AudioTec"));
                         doc.Add(new iTextSharp.text.Paragraph("---------------------------------------------"));
-                        doc.Add(new iTextSharp.text.Paragraph("Nombre: " + ClienteActual.nombre));
-                        doc.Add(new iTextSharp.text.Paragraph("DNI: " + ClienteActual.dni));
-                        doc.Add(new iTextSharp.text.Paragraph("Teléfono: " + ClienteActual.telefono));
-                        doc.Add(new iTextSharp.text.Paragraph("Dirección: " + ClienteActual.direccion));
-                        doc.Add(new iTextSharp.text.Paragraph("Fecha de llegada: " + ClienteActual.fechaLlegada.ToShortDateString()));
-                        doc.Add(new iTextSharp.text.Paragraph("Articulo: "+ ClienteActual.articulo));
-                        doc.Add(new iTextSharp.text.Paragraph("Marca: "+ClienteActual.marca));
-                        doc.Add(new iTextSharp.text.Paragraph("Modelo: " + ClienteActual.modelo));
+                        doc.Add(new iTextSharp.text.Paragraph("Nombre: " + ClienteActual.Nombre));
+                        doc.Add(new iTextSharp.text.Paragraph("DNI: " + ClienteActual.DNI));
+                        doc.Add(new iTextSharp.text.Paragraph("Teléfono: " + ClienteActual.Telefono));
+                        doc.Add(new iTextSharp.text.Paragraph("Dirección: " + ClienteActual.Direccion));
+                        //doc.Add(new iTextSharp.text.Paragraph("Fecha de llegada: " + ClienteActual.fechaLlegada.ToShortDateString()));
+                        
+                        ////doc.Add(new iTextSharp.text.Paragraph("Articulo: "+ ClienteActual.articulo));
+                        ////doc.Add(new iTextSharp.text.Paragraph("Marca: "+ClienteActual.marca));
+                        ////doc.Add(new iTextSharp.text.Paragraph("Modelo: " + ClienteActual.modelo));
 
                         // En esta parte en ves de sacar los datos directamente del cliente deberia de ser de la orden
                         /* Ejemplo
@@ -88,7 +94,7 @@ namespace AudioTec
                     }
 
                     // Preguntar si desea enviar por email
-                    if (!string.IsNullOrWhiteSpace(ClienteActual.email))
+                    if (!string.IsNullOrWhiteSpace(ClienteActual.Email))
                     {
                         DialogResult enviar = MessageBox.Show("¿Deseás enviar el comprobante al correo del cliente?", "Enviar por correo", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                         if (enviar == DialogResult.Yes)
@@ -109,7 +115,7 @@ namespace AudioTec
                                 // Crear mensaje
                                 MailMessage mensaje = new MailMessage();
                                 mensaje.From = new MailAddress(correoPropio);
-                                mensaje.To.Add(ClienteActual.email);
+                                mensaje.To.Add(ClienteActual.Email);
                                 mensaje.Subject = "Comprobante de reparación - AudioTec";
                                 mensaje.Body = "Adjunto te enviamos el comprobante de tu reparación. ¡Gracias por confiar en nosotros!";
                                 mensaje.Attachments.Add(new Attachment(path));
