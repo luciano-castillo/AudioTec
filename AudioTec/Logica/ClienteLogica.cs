@@ -133,9 +133,9 @@ namespace AudioTec.Logica
             using (SQLiteConnection con = new SQLiteConnection(Conexion.cadena))
             {
                 con.Open();
-                string query = "SELECT c.DNI, c.Nombre, c.Direccion, c.Telefono, c.Email" +
-                    "FROM Orden o" +
-                    "JOIN Cliente c ON (o.ClienteDNI = c.DNI)" +
+                string query = "SELECT c.DNI, c.Nombre, c.Direccion, c.Telefono, c.Email " +
+                    "FROM Orden o " +
+                    "JOIN Cliente c ON (o.ClienteDNI = c.DNI) " +
                     "Where o.OrdenID = @OrdenID";
 
                 SQLiteCommand cmd = new SQLiteCommand (query, con);

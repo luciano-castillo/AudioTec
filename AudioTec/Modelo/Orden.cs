@@ -21,6 +21,11 @@ namespace AudioTec.Modelo
         public string Repuesto { get; set; }
 
 
+        public Orden()
+        {
+            Electrodomesticos = new List<Electrodomestico>();
+        }
+
         // Crea la orden y lo guarda en la base de datos
         public bool CrearOrden()
         {
@@ -70,7 +75,7 @@ namespace AudioTec.Modelo
         // Editar orden
 
         // Traer una orden vacia y cargar los datos desde la BD
-        private void TraerOrden(int id)
+        public void TraerOrden(int id)
         {
 
             Orden datos = OrdenLogica.TraerOrden(id);
@@ -84,7 +89,13 @@ namespace AudioTec.Modelo
                 Fecha_retiro = datos.Fecha_retiro;
                 Repuesto = datos.Repuesto;
 
-                Electrodomesticos = ElectrodomesticoLogica.TraerElectrodomesticos(this);
+                List<Electrodomestico> ElectroTraido = ElectrodomesticoLogica.TraerElectrodomesticos(this);
+
+                foreach (var item in ElectroTraido)
+                {
+                    Electrodomesticos.Add(item);
+                }
+
             }          
 
         }

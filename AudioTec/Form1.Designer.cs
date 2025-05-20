@@ -80,14 +80,17 @@
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.buttonGuardarCliente = new System.Windows.Forms.Button();
             this.label15 = new System.Windows.Forms.Label();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.dataGridViewOrdenes = new System.Windows.Forms.DataGridView();
+            this.OrdenID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Nombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DNI = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewOrdenes)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -573,6 +576,7 @@
             this.textBoxNroOrden.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxNroOrden.Enabled = false;
             this.textBoxNroOrden.Location = new System.Drawing.Point(97, 110);
             this.textBoxNroOrden.Name = "textBoxNroOrden";
             this.textBoxNroOrden.Size = new System.Drawing.Size(152, 20);
@@ -615,20 +619,55 @@
             this.label15.Text = "Email";
             this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // dataGridView1
+            // dataGridViewOrdenes
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(469, 171);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(240, 150);
-            this.dataGridView1.TabIndex = 27;
+            this.dataGridViewOrdenes.AllowUserToAddRows = false;
+            this.dataGridViewOrdenes.AllowUserToDeleteRows = false;
+            this.dataGridViewOrdenes.AllowUserToResizeColumns = false;
+            this.dataGridViewOrdenes.AllowUserToResizeRows = false;
+            this.dataGridViewOrdenes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewOrdenes.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.OrdenID,
+            this.Nombre,
+            this.DNI});
+            this.dataGridViewOrdenes.Location = new System.Drawing.Point(523, 335);
+            this.dataGridViewOrdenes.MultiSelect = false;
+            this.dataGridViewOrdenes.Name = "dataGridViewOrdenes";
+            this.dataGridViewOrdenes.ReadOnly = true;
+            this.dataGridViewOrdenes.RowHeadersVisible = false;
+            this.dataGridViewOrdenes.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            this.dataGridViewOrdenes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridViewOrdenes.Size = new System.Drawing.Size(315, 150);
+            this.dataGridViewOrdenes.TabIndex = 27;
+            this.dataGridViewOrdenes.Click += new System.EventHandler(this.dataGridViewOrdenes_Click);
+            // 
+            // OrdenID
+            // 
+            this.OrdenID.HeaderText = "OrdenID";
+            this.OrdenID.Name = "OrdenID";
+            this.OrdenID.ReadOnly = true;
+            this.OrdenID.Width = 70;
+            // 
+            // Nombre
+            // 
+            this.Nombre.HeaderText = "Nombre";
+            this.Nombre.Name = "Nombre";
+            this.Nombre.ReadOnly = true;
+            this.Nombre.Width = 170;
+            // 
+            // DNI
+            // 
+            this.DNI.HeaderText = "DNI";
+            this.DNI.Name = "DNI";
+            this.DNI.ReadOnly = true;
+            this.DNI.Width = 70;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1207, 758);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.dataGridViewOrdenes);
             this.Controls.Add(this.label15);
             this.Controls.Add(this.buttonGuardarCliente);
             this.Controls.Add(this.dateTimePicker1);
@@ -673,7 +712,7 @@
             this.tableLayoutPanel3.PerformLayout();
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel4.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewOrdenes)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -732,7 +771,10 @@
         private System.Windows.Forms.Button buttonGuardarCliente;
         private System.Windows.Forms.TextBox textBoxEmail;
         private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView dataGridViewOrdenes;
+        private System.Windows.Forms.DataGridViewTextBoxColumn OrdenID;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Nombre;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DNI;
     }
 }
 

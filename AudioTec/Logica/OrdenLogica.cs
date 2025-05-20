@@ -15,7 +15,7 @@ namespace AudioTec.Logica
 
 
         private static OrdenLogica _instancia = null;
-
+        public static int NroOrdenActual = UltimoNroOrden();
 
         public OrdenLogica() { }
 
@@ -335,6 +335,32 @@ namespace AudioTec.Logica
                 return resultado;
         }
 
+        private static int UltimoNroOrden()
+        {
+            int resultado = 0;
+
+            using (SQLiteConnection con = new SQLiteConnection(Conexion.cadena))
+            {
+                con.Open();
+                string query = "SELECT MAX(OrdenID) AS max FROM Orden";
+
+                SQLiteCommand cmd = new SQLiteCommand(query, con);
+
+                using (SQLiteDataReader reader = cmd.ExecuteReader())
+                {
+
+                    if (reader.Read())
+                    {
+                        resultado = int.Parse(reader["max"].ToString());
+                    }
+
+                }
+
+            }
+
+            return resultado;
+        }
+
         //Traer orden por Nro de DNI
         public static Orden TraerNroOrden(string dni)
         {
@@ -367,7 +393,10 @@ namespace AudioTec.Logica
             return null;
         }
 
-
+        public static void AumentarNroOrden()
+        {
+            NroOrdenActual++;
+        }
 
     }
 }

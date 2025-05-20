@@ -12,6 +12,7 @@ namespace AudioTec.Logica
     internal class ElectrodomesticoLogica
     {
         private static ElectrodomesticoLogica _instancia = null;
+        public static int electroIDActual = UltimoNroElectrodomestico();
 
         public ElectrodomesticoLogica() { }
 
@@ -36,10 +37,10 @@ namespace AudioTec.Logica
             using (SQLiteConnection con = new SQLiteConnection(Conexion.cadena))
             {
                 con.Open();
-                string query = "SELECT e.ElectrodomesticoID, e.Articulo, e.Modelo, e.Marca, e.Observacion, e.ClienteDNI" +
-                    "FROM Orden_Electrodomestico oe" +
-                    "JOIN Electrodomestico e ON (oe.ElectrodomesticoID = e.ElectrodomesticoID)" +
-                    "WHERE oe.OrdenID = @nroOrden";
+                string query = "SELECT e.ElectrodomesticoID, e.Articulo, e.Modelo, e.Marca, e.Observacion, e.ClienteDNI " +
+                    "FROM Orden_Electrodomestico o " +
+                    "JOIN Electrodomestico e ON (o.ElectrodomesticoID = e.ElectrodomesticoID) " +
+                    "WHERE o.OrdenID = @nroOrden";
 
                 SQLiteCommand cmd = new SQLiteCommand(query, con);
                 cmd.Parameters.Add(new SQLiteParameter("@nroOrden", obj.OrdenID));
@@ -95,6 +96,32 @@ namespace AudioTec.Logica
             return respuesta;
         }
 
+        public static bool RelacionarOrdenElectrodomestico(Electrodomestico obj, Orden orden)
+        {
+            bool respuesta = true;
+
+            using (SQLiteConnection con = new SQLiteConnection(Conexion.cadena))
+            {
+                con.Open();
+                string query = "insert into Orden_Electrodomestico (OrdenID, ElectrodomesticoID) " +
+                    "Values (@ordenID, @electrodomesticoID)";
+
+                SQLiteCommand cmd = new SQLiteCommand(query, con);
+                cmd.Parameters.Add(new SQLiteParameter("@ordenID", orden.OrdenID));
+                cmd.Parameters.Add(new SQLiteParameter("@electrodomesticoID", obj.ElectrodomesticoID));
+
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                if (cmd.ExecuteNonQuery() < 1)
+                {
+                    respuesta = false;
+                }
+
+            }
+
+            return respuesta;
+        }
+
         // Comprueba si ya existe un electrodomestico
         public static bool Existe(string id)
         {
@@ -113,6 +140,63 @@ namespace AudioTec.Logica
             }
 
             return respuesta;
+        }
+
+        public static int CantElectrodomesticos()
+        {
+            int respuesta = 0;
+
+            using (SQLiteConnection con = new SQLiteConnection(Conexion.cadena))
+            {
+                con.Open();
+                string query = "SELECT COUNT(*) AS TotalElectro FROM Electrodomestico";
+
+                SQLiteCommand cmd = new SQLiteCommand(query, con);
+
+                using (SQLiteDataReader reader = cmd.ExecuteReader())
+                {
+
+                    if (reader.Read())
+                    {
+                        respuesta = int.Parse(reader["TotalElectro"].ToString());
+                    }
+
+                }
+
+            }
+
+            return respuesta;
+        }
+
+        private static int UltimoNroElectrodomestico()
+        {
+            int resultado = 0;
+
+            using (SQLiteConnection con = new SQLiteConnection(Conexion.cadena))
+            {
+                con.Open();
+                string query = "SELECT MAX(ElectrodomesticoID) AS max FROM Electrodomestico";
+
+                SQLiteCommand cmd = new SQLiteCommand(query, con);
+
+                using (SQLiteDataReader reader = cmd.ExecuteReader())
+                {
+
+                    if (reader.Read())
+                    {
+                        resultado = int.Parse(reader["max"].ToString());
+                    }
+
+                }
+
+            }
+
+            return resultado;
+        }
+
+        public static void AumentarNroElectrodomestico()
+        {
+            electroIDActual++;
         }
 
     }
