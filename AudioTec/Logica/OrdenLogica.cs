@@ -139,7 +139,7 @@ namespace AudioTec.Logica
 
 
         // Traer NroOrden|Dni|Cliente nombre todas las ordenes
-        public List<Orden> TraerOrdenes(int nroOrden, string dni, string nombre)
+        public static List<Orden> TraerOrdenes(int nroOrden, string dni, string nombre)
         {
 
             List<Orden> ordenes = new List<Orden>();
@@ -147,10 +147,11 @@ namespace AudioTec.Logica
             using (SQLiteConnection con = new SQLiteConnection(Conexion.cadena))
             {
                 con.Open();
-                string query = "SELECT o.OrdenID, c.DNI, c.Nombre" +
-                    "FROM Orden o" +
-                    "INNER JOIN Cliente c ON o.ClienteDNI = c.DNI" +
-                    "WHERE 1=1"; //Condicion siempre verdadera
+                string query = "SELECT o.OrdenID, o.Presupuesto, o.Fecha_reparacion, o.Fecha_retiro, o.Repuesto, " +
+                    "c.DNI, c.Nombre " +
+                    "FROM Orden o " +
+                    "INNER JOIN Cliente c ON o.ClienteDNI = c.DNI " +
+                    "WHERE 1=1 "; //Condicion siempre verdadera
 
                 // Filtros dinamico
                 if (nroOrden != 0)
@@ -163,7 +164,7 @@ namespace AudioTec.Logica
                 }
                 if (!string.IsNullOrEmpty(nombre))
                 {
-                    query += " AND c.Nombre LIKE @nombre";
+                    query += " AND c.Nombre LIKE @nombre COLLATE NOCASE";
                 }
 
                 // Agregar clausula de ordenamiento
@@ -182,7 +183,7 @@ namespace AudioTec.Logica
                 }
                 if (!string.IsNullOrEmpty(nombre))
                 {
-                    cmd.Parameters.Add(new SQLiteParameter("@nombre", nombre));
+                    cmd.Parameters.Add(new SQLiteParameter("@nombre", "%" + nombre + "%"));
                 }
 
                 using (SQLiteDataReader reader = cmd.ExecuteReader())
@@ -224,7 +225,6 @@ namespace AudioTec.Logica
 
 
                 SQLiteCommand cmd = new SQLiteCommand(query, con);
-                //cmd.CommandType = System.Data.CommandType.Text;
 
                 using (SQLiteDataReader reader = cmd.ExecuteReader())
                 {
@@ -391,6 +391,28 @@ namespace AudioTec.Logica
                 }
             }
             return null;
+        }
+
+        public static bool EliminarOrden(int id)
+        {
+            bool respuesta = true;
+            
+            using (SQLiteConnection con = new SQLiteConnection(Conexion.cadena))
+            {
+                con.Open();
+                string query = "DELETE FROM Orden WHERE OrdenID = @ordenID";
+
+                SQLiteCommand cmd = new SQLiteCommand(query, con);
+                cmd.Parameters.AddWithValue("@ordenID", id);
+                   
+                if (cmd.ExecuteNonQuery() < 1)
+                {
+                    respuesta = false;
+                }
+
+            }
+
+            return respuesta;
         }
 
         public static void AumentarNroOrden()

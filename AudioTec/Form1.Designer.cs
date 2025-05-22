@@ -234,6 +234,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonEliminar.AutoSize = true;
+            this.buttonEliminar.Enabled = false;
             this.buttonEliminar.Location = new System.Drawing.Point(147, 3);
             this.buttonEliminar.Name = "buttonEliminar";
             this.buttonEliminar.Size = new System.Drawing.Size(68, 40);

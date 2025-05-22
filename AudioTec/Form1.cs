@@ -130,39 +130,24 @@ namespace AudioTec
         private void buttonBuscar_Click(object sender, EventArgs e)
         {
 
-
             string dniBuscar = textBoxBuscarDni.Text.Trim();
-            string ordenBuscar = textBoxBuscarNroOrden.Text.Trim();
+            int ordenBuscar;
             string nombreBuscar = textBoxBuscarNombre.Text.Trim();
-            List<Cliente> resultado = new List<Cliente>();
 
-            Cliente clienteEncontrado = null;
-
-            if (!string.IsNullOrWhiteSpace(dniBuscar))
+            if (textBoxBuscarNroOrden.Text.Trim() == "")
             {
-                clienteEncontrado = ClienteLogica.TraerCliente(dniBuscar);
-            }
-            else if (!string.IsNullOrWhiteSpace(ordenBuscar) && int.TryParse(ordenBuscar, out int nroOrden))
-            {
-                clienteEncontrado = ClienteLogica.TraerCliente(nroOrden);
-            }
-            else if(!string.IsNullOrWhiteSpace(nombreBuscar))
-            {
-                resultado = ClienteLogica.BuscarPorNombre(nombreBuscar);
-            }
-
-            if (clienteEncontrado != null || resultado.Count > 0)
-            {
-                listBoxClientes.DataSource = null;
-                listBoxClientes.DataSource = new List<Cliente> { clienteEncontrado };
-                listBoxClientes.DisplayMember = "Nombre"; // o usar ToString() en la clase Cliente
-                listBoxClientes.SelectedIndex = -1;
+                ordenBuscar = 0;
             }
             else
             {
-                MessageBox.Show("No se encontró ningún cliente con los datos proporcionados.");
-                listBoxClientes.DataSource = null;
+                ordenBuscar = int.Parse(textBoxBuscarNroOrden.Text.Trim());
             }
+
+            List<Orden> resultadoBusqueda = new List<Orden>();
+            resultadoBusqueda = OrdenLogica.TraerOrdenes(ordenBuscar, dniBuscar, nombreBuscar);
+            CargarOrdenes(resultadoBusqueda);
+            LimpiarDatos();
+
         }
 
         private void buttonGuardarCliente_Click(object sender, EventArgs e)
@@ -212,16 +197,6 @@ namespace AudioTec
                         }
                     }                    
                     
-
-                    //listBoxClientes.DataSource = null;
-                    //listBoxClientes.DataSource = ClienteLogica.Listar();
-                    //listBoxClientes.DisplayMember = "Nombre";
-                    //listBoxClientes.SelectedIndex = -1;
-
-                    listBoxClientes.DataSource = null;
-                    listBoxClientes.DataSource = OrdenLogica.TraerOrdenes();
-                    listBoxClientes.DisplayMember = null;
-                    listBoxClientes.SelectedIndex = -1;
                     CargarListaOrdenes();
                     CargarOrdenes(listaOrdenes);
                     LimpiarDatos();
@@ -238,39 +213,31 @@ namespace AudioTec
         {
             LimpiarDatos();
             dataGridViewOrdenes.ClearSelection();
+            buttonEliminar.Enabled = false;
         }
 
         private void buttonEliminar_Click(object sender, EventArgs e)
         {
-            if (listBoxClientes.SelectedItem != null)
+            if (dataGridViewOrdenes.SelectedRows != null)
             {
-                // Confirmación
                 var resultado = MessageBox.Show("¿Estás seguro que deseas eliminar este cliente?", "Confirmar eliminación", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
                 if (resultado == DialogResult.Yes)
                 {
-                    Cliente clienteSeleccionado = (Cliente)listBoxClientes.SelectedItem;
+                    int ordenID = Convert.ToInt32(dataGridViewOrdenes.SelectedRows[0].Cells["OrdenID"].Value);
 
-                    listaClientes.Remove(clienteSeleccionado);
-
-                    // Actualizar el ListBox
-                    listBoxClientes.DataSource = null;
-                    listBoxClientes.DataSource = listaClientes;
-
-                    // Limpiar los campos
-                    textBoxNombre.Text = "";
-                    textBoxDni.Text = "";
-                    textBoxTelefono.Text = "";
-                    textBoxDireccion.Text = "";
-                    dateTimePicker1.Value = DateTime.Now;
-
-                    MessageBox.Show("Cliente eliminado con éxito.");
+                    OrdenLogica.EliminarOrden(ordenID);
+                    ElectrodomesticoLogica.EliminarElectrodomesticosSinOrden();
+                    CargarListaOrdenes();
+                    CargarOrdenes(listaOrdenes);
+                    LimpiarDatos();
+                }
+                else
+                {
+                    MessageBox.Show("Seleccioná un cliente para eliminar.");
                 }
             }
-            else
-            {
-                MessageBox.Show("Seleccioná un cliente para eliminar.");
-            }
+
         }
 
         private void buttonActualizar_Click(object sender, EventArgs e)
@@ -359,6 +326,7 @@ namespace AudioTec
                 ordenSeleccionada.TraerOrden(ordenID);
                 LimpiarDatos();
                 CargarDatos(ordenSeleccionada);
+                buttonEliminar.Enabled = true;
             }
         }
 

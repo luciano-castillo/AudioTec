@@ -122,6 +122,30 @@ namespace AudioTec.Logica
             return respuesta;
         }
 
+        // Eliminar electrodomesticos
+        public static bool EliminarElectrodomesticosSinOrden()
+        {
+            bool respuesta = true;
+
+            using (SQLiteConnection con = new SQLiteConnection(Conexion.cadena))
+            {
+                con.Open();
+                string query = "DELETE FROM Electrodomestico " +
+                    "WHERE ElectrodomesticoID NOT IN (SELECT ElectrodomesticoID FROM Orden_Electrodomestico)";
+
+                using(SQLiteCommand cmd = new SQLiteCommand(query, con))
+                {
+                    if (cmd.ExecuteNonQuery() < 1)
+                    {
+                        respuesta = false;
+                    }
+                }
+            }
+
+            return respuesta;
+        }
+
+
         // Comprueba si ya existe un electrodomestico
         public static bool Existe(string id)
         {
