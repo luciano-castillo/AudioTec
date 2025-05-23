@@ -53,7 +53,6 @@
             this.textBoxBuscarNombre = new System.Windows.Forms.TextBox();
             this.textBoxBuscarDni = new System.Windows.Forms.TextBox();
             this.textBoxBuscarNroOrden = new System.Windows.Forms.TextBox();
-            this.listBoxClientes = new System.Windows.Forms.ListBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.textBoxNombre = new System.Windows.Forms.TextBox();
             this.textBoxDni = new System.Windows.Forms.TextBox();
@@ -84,6 +83,7 @@
             this.OrdenID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Nombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DNI = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.listBoxClientes = new System.Windows.Forms.ListBox();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -341,15 +341,6 @@
             this.textBoxBuscarNroOrden.Name = "textBoxBuscarNroOrden";
             this.textBoxBuscarNroOrden.Size = new System.Drawing.Size(100, 20);
             this.textBoxBuscarNroOrden.TabIndex = 2;
-            // 
-            // listBoxClientes
-            // 
-            this.listBoxClientes.FormattingEnabled = true;
-            this.listBoxClientes.Location = new System.Drawing.Point(959, 130);
-            this.listBoxClientes.Name = "listBoxClientes";
-            this.listBoxClientes.Size = new System.Drawing.Size(218, 355);
-            this.listBoxClientes.TabIndex = 7;
-            this.listBoxClientes.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBoxClientes_MouseDoubleClick);
             // 
             // tableLayoutPanel3
             // 
@@ -663,6 +654,15 @@
             this.DNI.ReadOnly = true;
             this.DNI.Width = 70;
             // 
+            // listBoxClientes
+            // 
+            this.listBoxClientes.FormattingEnabled = true;
+            this.listBoxClientes.Location = new System.Drawing.Point(959, 130);
+            this.listBoxClientes.Name = "listBoxClientes";
+            this.listBoxClientes.Size = new System.Drawing.Size(218, 355);
+            this.listBoxClientes.TabIndex = 7;
+            this.listBoxClientes.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBoxClientes_MouseDoubleClick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -745,7 +745,6 @@
         private System.Windows.Forms.TextBox textBoxBuscarNombre;
         private System.Windows.Forms.TextBox textBoxBuscarDni;
         private System.Windows.Forms.TextBox textBoxBuscarNroOrden;
-        private System.Windows.Forms.ListBox listBoxClientes;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.TextBox textBoxNombre;
         private System.Windows.Forms.TextBox textBoxDni;
@@ -776,6 +775,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn OrdenID;
         private System.Windows.Forms.DataGridViewTextBoxColumn Nombre;
         private System.Windows.Forms.DataGridViewTextBoxColumn DNI;
+        private System.Windows.Forms.ListBox listBoxClientes;
     }
 }
 
