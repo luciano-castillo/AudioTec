@@ -13,6 +13,10 @@ using AudioTec.Modelo;
 using AudioTec.Logica;
 using System.IO;
 
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using iTextSharp.tool.xml;
+
 namespace AudioTec
 {
     public partial class FormReparaciones : UserControl
@@ -20,11 +24,13 @@ namespace AudioTec
         private Cliente ClienteActual;
         private Electrodomestico eletroActual;
         private Orden ordenActual;
-        public FormReparaciones(Cliente cliente)
+        public FormReparaciones(Orden orden)
         {
             InitializeComponent();
-            this.ClienteActual = cliente;
-            textBoxNombreRep.Text = cliente.Nombre;
+            ordenActual = orden;
+            textBoxNombreRep.Text = orden.Cliente.Nombre;
+            textBoxNroOrdenRep.Text = orden.OrdenID.ToString();
+            textBoxArticuloRep.Text = orden.Electrodomesticos[0].Articulo;
 
             //textBoxArticuloRep.Text = cliente.articulo;
         }
@@ -37,7 +43,7 @@ namespace AudioTec
 
         private void buttonGenerarComprobante_Click(object sender, EventArgs e)
         {
-            if (ClienteActual == null)
+            if (ordenActual == null)
             {
                 MessageBox.Show("No hay cliente asignado.");
                 return;
@@ -47,26 +53,26 @@ namespace AudioTec
             {
                 saveDialog.Filter = "PDF Files|*.pdf";
                 saveDialog.Title = "Guardar comprobante";
-                saveDialog.FileName = $"Comprobante {ClienteActual.Nombre}-{ClienteActual.DNI}.pdf";
+                saveDialog.FileName = $"Comprobante {ordenActual.Cliente.Nombre}-{ordenActual.Cliente.DNI}.pdf";
 
                 if (saveDialog.ShowDialog() == DialogResult.OK)
                 {
                     string path = saveDialog.FileName;
 
-                    using (var fs = new System.IO.FileStream(path, System.IO.FileMode.Create))
+                    using (var fs = new FileStream(path, FileMode.Create))
                     {
-                        var doc = new iTextSharp.text.Document();
-                        iTextSharp.text.pdf.PdfWriter.GetInstance(doc, fs);
+                        var doc = new Document();
+                        PdfWriter writer = PdfWriter.GetInstance(doc, fs);
 
                         doc.Open();
 
                         //Datos del Cliente
-                        doc.Add(new iTextSharp.text.Paragraph("COMPROBANTE DE REPARACIÓN - AudioTec"));
-                        doc.Add(new iTextSharp.text.Paragraph("---------------------------------------------"));
-                        doc.Add(new iTextSharp.text.Paragraph("Nombre: " + ClienteActual.Nombre));
-                        doc.Add(new iTextSharp.text.Paragraph("DNI: " + ClienteActual.DNI));
-                        doc.Add(new iTextSharp.text.Paragraph("Teléfono: " + ClienteActual.Telefono));
-                        doc.Add(new iTextSharp.text.Paragraph("Dirección: " + ClienteActual.Direccion));
+                        doc.Add(new Paragraph("COMPROBANTE DE REPARACIÓN - AudioTec"));
+                        doc.Add(new Paragraph("---------------------------------------------"));
+                        doc.Add(new Paragraph("Nombre: " + ordenActual.Cliente.Nombre));
+                        doc.Add(new Paragraph("DNI: " + ordenActual.Cliente.DNI));
+                        doc.Add(new Paragraph("Teléfono: " + ordenActual.Cliente.Telefono));
+                        doc.Add(new Paragraph("Dirección: " + ordenActual.Cliente.Direccion));
                         //doc.Add(new iTextSharp.text.Paragraph("Fecha de llegada: " + ClienteActual.fechaLlegada.ToShortDateString()));
                         
                         ////doc.Add(new iTextSharp.text.Paragraph("Articulo: "+ ClienteActual.articulo));
@@ -86,15 +92,17 @@ namespace AudioTec
                         */
 
                         // Los datos de reparación, repuestos, etc.
-                        doc.Add(new iTextSharp.text.Paragraph($"{textBoxDatosRep.Text}"));
+                        doc.Add(new Paragraph($"{textBoxDatosRep.Text}"));
 
                         doc.Close();
+
+                        fs.Close();
 
                         MessageBox.Show("Comprobante generado exitosamente.");
                     }
 
                     // Preguntar si desea enviar por email
-                    if (!string.IsNullOrWhiteSpace(ClienteActual.Email))
+                    if (!string.IsNullOrWhiteSpace(ordenActual.Cliente.Email))
                     {
                         DialogResult enviar = MessageBox.Show("¿Deseás enviar el comprobante al correo del cliente?", "Enviar por correo", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                         if (enviar == DialogResult.Yes)
@@ -115,7 +123,7 @@ namespace AudioTec
                                 // Crear mensaje
                                 MailMessage mensaje = new MailMessage();
                                 mensaje.From = new MailAddress(correoPropio);
-                                mensaje.To.Add(ClienteActual.Email);
+                                mensaje.To.Add(ordenActual.Cliente.Email);
                                 mensaje.Subject = "Comprobante de reparación - AudioTec";
                                 mensaje.Body = "Adjunto te enviamos el comprobante de tu reparación. ¡Gracias por confiar en nosotros!";
                                 mensaje.Attachments.Add(new Attachment(path));

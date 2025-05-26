@@ -17,6 +17,7 @@ namespace AudioTec
     {
         List<Cliente> listaClientes = ClienteLogica.Listar();
         List<Orden> listaOrdenes = OrdenLogica.TraerOrdenes();
+        Orden ordenSeleccionada = new Orden();
         //List<Orden> listaOrdenes = new List<Orden>();
 
         private string correoGmail;
@@ -116,6 +117,16 @@ namespace AudioTec
 
         private void toolStripButtonReparaciones_Click(object sender, EventArgs e)
         {
+            if(dataGridViewOrdenes.SelectedRows != null)
+            {
+                FormReparaciones reparaciones = new FormReparaciones(ordenSeleccionada);
+                panelContenedor.Visible = true;
+                panelContenedor.BringToFront();
+                panelContenedor.Dock = DockStyle.Fill;
+                CargarFormulario(reparaciones);
+            }
+
+            /*
             if (listBoxClientes.SelectedItems != null) 
             {
                 Cliente clienteSeleccinado = (Cliente)listBoxClientes.SelectedItem;
@@ -124,7 +135,7 @@ namespace AudioTec
                 panelContenedor.BringToFront();
                 panelContenedor.Dock = DockStyle.Fill;
                 CargarFormulario(reparaciones);
-            }
+            } */
         }
 
         private void buttonBuscar_Click(object sender, EventArgs e)
@@ -211,6 +222,7 @@ namespace AudioTec
 
         private void buttonNuevo_Click(object sender, EventArgs e)
         {
+            ordenSeleccionada = null;
             LimpiarDatos();
             dataGridViewOrdenes.ClearSelection();
             buttonEliminar.Enabled = false;
@@ -231,6 +243,7 @@ namespace AudioTec
                     CargarListaOrdenes();
                     CargarOrdenes(listaOrdenes);
                     LimpiarDatos();
+                    ordenSeleccionada = null;
                 }
                 else
                 {
@@ -322,7 +335,7 @@ namespace AudioTec
             {
                 int ordenID = Convert.ToInt32(dataGridViewOrdenes.SelectedRows[0].Cells["OrdenID"].Value);
 
-                Orden ordenSeleccionada = new Orden();
+                //Orden ordenSeleccionada = new Orden();
                 ordenSeleccionada.TraerOrden(ordenID);
                 LimpiarDatos();
                 CargarDatos(ordenSeleccionada);
