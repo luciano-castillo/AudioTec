@@ -309,6 +309,31 @@ namespace AudioTec.Logica
             return respuesta;
         }
 
+        public static bool CargarDiagnosticoPresupuesto(Orden obj)
+        {
+            bool respuesta = true;
+
+            using (SQLiteConnection con = new SQLiteConnection(Conexion.cadena))
+            {
+                con.Open();
+                string query = "UPDATE Orden " +
+                    "SET Presupuesto = @presupuesto, Repuesto = @repuesto " +
+                    "WHERE OrdenID = @ordenID";
+
+                SQLiteCommand cmd = new SQLiteCommand(query, con);
+                cmd.Parameters.Add(new SQLiteParameter("@presupuesto", obj.Presupuesto));
+                cmd.Parameters.Add(new SQLiteParameter("@repuesto", obj.Repuesto));
+                cmd.Parameters.Add(new SQLiteParameter("ordenID", obj.OrdenID));
+
+                if (cmd.ExecuteNonQuery() < 1)
+                {
+                    respuesta = false;
+                }
+            }
+
+            return respuesta;
+        }
+
         public static int CantOrden()
         {
             int resultado = 0;

@@ -218,6 +218,31 @@ namespace AudioTec.Logica
             return resultado;
         }
 
+        public static bool CargarObservacionElectro(Electrodomestico obj)
+        {
+            bool respuesta = true;
+
+            using (SQLiteConnection con = new SQLiteConnection(Conexion.cadena))
+            {
+                con.Open();
+                string query = "UPDATE Electrodomestico " +
+                    "SET Observacion = @observacion " +
+                    "WHERE ElectrodomesticoID = @ID";
+
+                SQLiteCommand cmd = new SQLiteCommand(query,con);
+                cmd.Parameters.Add(new SQLiteParameter("@ID", obj.ElectrodomesticoID));
+                cmd.Parameters.Add(new SQLiteParameter("@observacion", obj.Observacion));
+
+                if (cmd.ExecuteNonQuery() < 1)
+                {
+                    respuesta = false;
+                }
+
+            }
+
+            return respuesta;
+        }
+
         public static void AumentarNroElectrodomestico()
         {
             electroIDActual++;
