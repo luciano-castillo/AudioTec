@@ -325,7 +325,16 @@ namespace AudioTec
 
         private void CargarListaOrdenes()
         {
-            listaOrdenes = OrdenLogica.TraerOrdenes();
+            //listaOrdenes = OrdenLogica.TraerOrdenes();
+
+            if (checkBox1.Checked)
+            {
+                listaOrdenes = OrdenLogica.TraerOrdenesNoTerminadas();
+            }
+            else
+            {
+                listaOrdenes = OrdenLogica.TraerOrdenes();
+            }
         }
 
         // Al hacer click un elemento de la tabla, carga los datos
@@ -408,5 +417,11 @@ namespace AudioTec
             };
         }
 
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            // Devuelve true si esta activado
+            CargarListaOrdenes();
+            CargarOrdenes(listaOrdenes);
+        }
     }
 }
