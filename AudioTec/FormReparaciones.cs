@@ -27,11 +27,45 @@ namespace AudioTec
         public FormReparaciones(Orden orden)
         {
             InitializeComponent();
-            ordenActual = orden;
-            textBoxNombreRep.Text = orden.Cliente.Nombre;
-            textBoxNroOrdenRep.Text = orden.OrdenID.ToString();
-            textBoxArticuloRep.Text = orden.Electrodomesticos[0].Articulo;
-            textBoxPresupuesto.Text = orden.Presupuesto.ToString();
+
+            //ordenActual = orden;
+            //textBoxNombreRep.Text = orden.Cliente.Nombre;
+            //textBoxNroOrdenRep.Text = orden.OrdenID.ToString();
+            //textBoxArticuloRep.Text = orden.Electrodomesticos[0].Articulo;
+
+            //Para que no se detenga el Programa por si se selecciona el Boton Repraciones sin una Orden
+            try
+            {
+                if (orden == null)
+                {
+                    MessageBox.Show("No se pasó una orden válida.");
+                    return;
+                }
+
+                ordenActual = orden;
+
+                if (orden.Cliente != null)
+                {
+                    textBoxNombreRep.Text = orden.Cliente.Nombre;
+                }
+
+                textBoxNroOrdenRep.Text = orden.OrdenID.ToString();
+
+                if (orden.Electrodomesticos != null && orden.Electrodomesticos.Count > 0)
+                {
+                    textBoxArticuloRep.Text = orden.Electrodomesticos[0].Articulo;
+                }
+                else
+                {
+                    textBoxArticuloRep.Text = "Sin artículo";
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar los datos: " + ex.Message);
+            }
+
+
 
             //textBoxArticuloRep.Text = cliente.articulo;
         }

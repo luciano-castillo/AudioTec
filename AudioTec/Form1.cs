@@ -37,22 +37,26 @@ namespace AudioTec
                 Application.Exit();
                 return;
             }
+
+
+
             InitializeComponent();
-            MessageBox.Show(listaOrdenes.Count().ToString());
-            MessageBox.Show(listaClientes.Count().ToString());
-            
+
 
             listBoxClientes.DataSource = listaOrdenes;
             listBoxClientes.DisplayMember = null;
             panelContenedor.Visible = false;
 
-            //dataGridViewOrdenes.DataSource = listaOrdenes;
-
-            //panelContenedor.Dock = DockStyle.Fill;
 
             CargarNroOrden();
             CargarOrdenes(listaOrdenes);
             dataGridViewOrdenes.ClearSelection();
+
+            toolStrip1.ImageScalingSize = new Size(32, 32); // tamaño imagen antes de cargar
+
+            toolStripButtonIdentificacion.Image = Image.FromFile(@"Iconos/iconoIdentificacion.png");
+            toolStripButtonReparaciones.Image = Image.FromFile(@"Iconos/imagenReparacion.png");
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -119,6 +123,8 @@ namespace AudioTec
         {
             if(dataGridViewOrdenes.SelectedRows != null)
             {
+                //MessageBox.Show($"Cantidad de electrodomésticos: {ordenSeleccionada.Electrodomesticos?.Count}");
+
                 FormReparaciones reparaciones = new FormReparaciones(ordenSeleccionada);
                 panelContenedor.Visible = true;
                 panelContenedor.BringToFront();
@@ -126,16 +132,6 @@ namespace AudioTec
                 CargarFormulario(reparaciones);
             }
 
-            /*
-            if (listBoxClientes.SelectedItems != null) 
-            {
-                Cliente clienteSeleccinado = (Cliente)listBoxClientes.SelectedItem;
-                FormReparaciones reparaciones = new FormReparaciones(clienteSeleccinado);
-                panelContenedor.Visible = true;
-                panelContenedor.BringToFront();
-                panelContenedor.Dock = DockStyle.Fill;
-                CargarFormulario(reparaciones);
-            } */
         }
 
         private void buttonBuscar_Click(object sender, EventArgs e)
@@ -346,6 +342,7 @@ namespace AudioTec
 
                 //Orden ordenSeleccionada = new Orden();
                 ordenSeleccionada.TraerOrden(ordenID);
+                ordenSeleccionada.Electrodomesticos = ElectrodomesticoLogica.TraerElectrodomesticos(ordenSeleccionada);
                 LimpiarDatos();
                 CargarDatos(ordenSeleccionada);
                 buttonEliminar.Enabled = true;
