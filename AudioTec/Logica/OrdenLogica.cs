@@ -252,6 +252,49 @@ namespace AudioTec.Logica
             return ordenes; 
         }
 
+        public static List<Orden> TraerOrdenesNoTerminadas()
+        {
+
+            List<Orden> ordenes = new List<Orden>();
+
+            using (SQLiteConnection con = new SQLiteConnection(Conexion.cadena))
+            {
+                con.Open();
+                string query = "SELECT o.OrdenID, o.Presupuesto, o.Fecha_reparacion, o.Fecha_retiro, o.Repuesto, " +
+               "c.DNI, c.Nombre " +
+               "FROM Orden o " +
+               "INNER JOIN Cliente c ON o.ClienteDNI = c.DNI " +
+               "WHERE Fecha_retiro IS NULL OR Fecha_retiro = ''";
+
+
+                SQLiteCommand cmd = new SQLiteCommand(query, con);
+
+                using (SQLiteDataReader reader = cmd.ExecuteReader())
+                {
+
+                    while (reader.Read())
+                    {
+                        int id = int.Parse(reader["OrdenID"].ToString());
+                        ordenes.Add(new Orden()
+                        {
+                            Cliente = ClienteLogica.TraerCliente(id),
+                            OrdenID = id,
+                            Presupuesto = int.Parse(reader["Presupuesto"].ToString()),
+                            Fecha_reparacion = reader["Fecha_reparacion"].ToString(),
+                            Fecha_retiro = reader["Fecha_retiro"].ToString(),
+                            Repuesto = reader["Repuesto"].ToString(),
+
+                        });
+
+                    }
+
+                }
+
+            }
+
+            return ordenes;
+        }
+
 
         // Dar por terminada una orden -- Pone la fecha actual a la orden
         public static bool TerminarOrden(Orden obj)
@@ -262,7 +305,7 @@ namespace AudioTec.Logica
             {                
                 con.Open();
                 string query = "UPDATE Orden " +//espacio
-                    "SET Fecha_retiro = CURRENT_DATE" +
+                    "SET Fecha_retiro = CURRENT_DATE " +
                     "WHERE OrdenID = @nroOrden";
 
                 SQLiteCommand cmd = new SQLiteCommand(query,con);
@@ -304,6 +347,31 @@ namespace AudioTec.Logica
                     respuesta = false;
                 }
 
+            }
+
+            return respuesta;
+        }
+
+        public static bool CargarDiagnosticoPresupuesto(Orden obj)
+        {
+            bool respuesta = true;
+
+            using (SQLiteConnection con = new SQLiteConnection(Conexion.cadena))
+            {
+                con.Open();
+                string query = "UPDATE Orden " +
+                    "SET Presupuesto = @presupuesto, Repuesto = @repuesto " +
+                    "WHERE OrdenID = @ordenID";
+
+                SQLiteCommand cmd = new SQLiteCommand(query, con);
+                cmd.Parameters.Add(new SQLiteParameter("@presupuesto", obj.Presupuesto));
+                cmd.Parameters.Add(new SQLiteParameter("@repuesto", obj.Repuesto));
+                cmd.Parameters.Add(new SQLiteParameter("ordenID", obj.OrdenID));
+
+                if (cmd.ExecuteNonQuery() < 1)
+                {
+                    respuesta = false;
+                }
             }
 
             return respuesta;

@@ -1,101 +1,114 @@
 <!DOCTYPE html>
-<html lang="es">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Factura</title>
+    <title>Title of the document</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-
-        .container {
-            width: 80%;
-            margin: 0 auto;
-        }
-
-        .header, .client-details, .table {
-            width: 100%;
+        table.border {
             border-collapse: collapse;
-            margin-bottom: 20px;
         }
 
-            .header td, .client-details td, .table td, .table th {
-                border: 1px solid #ddd;
-                padding: 8px;
+            table.border th {
+                padding: 5px;
+                border: 1px solid black;
             }
 
-            .header td {
-                border: none;
-            }
-
-            .header .company-info {
-                text-align: right;
-            }
-
-                .header .company-info p {
-                    margin: 0;
-                }
-
-            .client-details th {
-                background-color: #f2f2f2;
-            }
-
-            .table th {
-                background-color: #f2f2f2;
-                text-align: left;
+            table.border td {
+                padding: 5px;
+                border: 1px solid black;
             }
     </style>
 </head>
 <body>
-    <div class="container">
-        <table class="header">
-            <tr>
-                <td>
-                    <h1>AudioTec</h1>
-                    <p>Reparación de electrodomésticos</p>
-                </td>
-                <td class="company-info">
-                    <p>Calle Cualquiera 123,</p>
-                    <p>Cualquier Lugar, CP: 12345</p>
-                    <p>911-234-567</p>
-                    <p>hola@austiogenial.es</p>
-                </td>
-            </tr>
-        </table>
-        <table class="client-details">
-            <tr>
-                <th>Factura nº: 01234</th>
-                <th>Fecha de factura: 2 de junio de 2030</th>
-            </tr>
-            <tr>
-                <th>Nombre del cliente</th>
-                <td>Jose Serrano</td>
-            </tr>
-            <tr>
-                <th>Dirección</th>
-                <td>Calle Cualquiera 123, Cualquier Lugar</td>
-            </tr>
-            <tr>
-                <th>Teléfono</th>
-                <td>3624666666</td>
-            </tr>
-            <tr>
-                <th>Email</th>
-                <td>JoseSerrano@gmail.com</td>
-            </tr>
-        </table>
-        <table class="table">
-            <tr>
-                <th>Artículo</th>
-                <th>Nombre del artículo</th>
-                <th>Diagnóstico y Datos de la Reparación</th>
-                <th>Repuestos</th>
-            </tr>
-            <tr>
-                <td colspan="4" style="text-align: right;">Total</td>
-            </tr>
-        </table>
-    </div>
+    <table style="width:100%">
+        <tr>
+            <td style="width:40%">
+                <table>
+                    <tr><td align="center"><h4 style="margin:0px; font-size:40px">AudioTec</h4></td></tr>
+                </table>
+            </td>
+            <td style="width:30%" align="center" valign="top">
+            </td>
+            <td style="width:30%">
+                <table class="border" style="width:100%">
+                    <tr><td align="center" style="background-color:#D8D8D8">FACTURA</td></tr>
+                    <tr><td align="center">Nro: @FACTURANRO</td></tr>
+                    <tr><td align="center">Fecha: @FECHA</td></tr>
+                </table>
+            </td>
+        </tr>
+
+
+        <tr><td colspan="3" height="20"></td></tr>
+
+        <tr>
+            <td colspan="3">
+                <table class="border" style="width:100%">
+                    <tr>
+                        <td style="width:15%; background-color:#D8D8D8">Cliente</td>
+                        <td style="width:40%">@CLIENTE</td>
+                        <td style="width:15%; background-color:#D8D8D8">DNI</td>
+                        <td style="width:40%">@DNI</td>
+                    </tr>
+                </table>
+                <table class="border" style="width:100%">
+                    <tr>
+                        <td style="width:15%; background-color:#D8D8D8">Direccion</td>
+                        <td style="width:40%">@DIRECCION</td>
+                        <td style="width:15%; background-color:#D8D8D8">Email</td>
+                        <td style="width:40%">@EMAIL</td>
+                    </tr>
+                </table>
+                <table class="border" style="width:100%">
+                    <tr>
+                        <td style="width:15%; background-color:#D8D8D8">Telefono</td>
+                        <td style="width:40%">@TELEFONO</td>
+                        <td style="width:15%"></td>
+                        <td style="width:40%"></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <tr><td colspan="3" height="30"></td></tr>
+
+        <tr>
+            <td colspan="3">
+                <table class="border" style="width:100%;">
+                    <tr>
+                        <td style="width:20%; background-color:#D8D8D8">Articulo</td>
+                        <td style="width:80%">@ARTICULO</td>
+                    </tr>
+                </table>
+                <table class="border" style="width:100%">
+                    <tr>
+                        <th style="width:50%; background-color:#D8D8D8">Diagnositcos y Datos de la reparacion</th>
+                        <th style="width:50%; background-color:#D8D8D8">Repuestos</th>
+                    </tr>
+                    <tr>
+                        <td>@DIAGNOSTICO </td>
+                        <td>@REPUESTOS </td>
+                    </tr>
+                </table>
+                <table align="right" class="border" style="width:20%">
+                    <tr>
+                        <td align="right" style="width:5px">Total:</td>
+                        <td>@TOTAL</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <tr><td colspan="3" height="80"></td></tr>
+
+        <tr colspan="3" style="width:100%">
+            <td>
+                <table style="width:100%">
+                    <tr><td style="width:200px">Direccion: Lisandro de la torre 2674 </td></tr>
+                    <tr><td>Telefono: 3624-458214</td></tr>
+                </table>
+            </td>
+        </tr>
+
+    </table>
 </body>
 </html>

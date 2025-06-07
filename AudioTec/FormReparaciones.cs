@@ -27,6 +27,7 @@ namespace AudioTec
         public FormReparaciones(Orden orden)
         {
             InitializeComponent();
+
             //ordenActual = orden;
             //textBoxNombreRep.Text = orden.Cliente.Nombre;
             //textBoxNroOrdenRep.Text = orden.OrdenID.ToString();
@@ -65,6 +66,7 @@ namespace AudioTec
             }
 
 
+
             //textBoxArticuloRep.Text = cliente.articulo;
         }
 
@@ -82,6 +84,18 @@ namespace AudioTec
                 return;
             }
 
+            string pagina_texto = Properties.Resources.PlantillaAudioTec.ToString();
+            pagina_texto = pagina_texto.Replace("@FACTURANRO",ordenActual.OrdenID.ToString());
+            pagina_texto = pagina_texto.Replace("@FECHA",DateTime.Now.ToString("dd/MM/yyyy"));
+            pagina_texto = pagina_texto.Replace("@CLIENTE", ordenActual.Cliente.Nombre);
+            pagina_texto = pagina_texto.Replace("@DNI", ordenActual.Cliente.DNI);
+            pagina_texto = pagina_texto.Replace("@DIRECCION", ordenActual.Cliente.Direccion);
+            pagina_texto = pagina_texto.Replace("@EMAIL", ordenActual.Cliente.Email);
+            pagina_texto = pagina_texto.Replace("@ARTICULO", ordenActual.Electrodomesticos[0].Articulo);
+            pagina_texto = pagina_texto.Replace("@DIAGNOSTICO", textBoxDatosRep.Text);
+            pagina_texto = pagina_texto.Replace("@REPUESTOS", textBoxRepuesto.Text);
+            pagina_texto = pagina_texto.Replace("@TOTAL", textBoxPresupuesto.Text);
+
             using (SaveFileDialog saveDialog = new SaveFileDialog())
             {
                 saveDialog.Filter = "PDF Files|*.pdf";
@@ -90,48 +104,30 @@ namespace AudioTec
 
                 if (saveDialog.ShowDialog() == DialogResult.OK)
                 {
-                    string path = saveDialog.FileName;
 
-                    using (var fs = new FileStream(path, FileMode.Create))
+                    using (FileStream fs = new FileStream(saveDialog.FileName, FileMode.Create))
                     {
-                        var doc = new Document();
+                        //Document doc = new Document(PageSize.A4, 25, 25, 25, 25);
+                        Document doc = new Document();
                         PdfWriter writer = PdfWriter.GetInstance(doc, fs);
 
                         doc.Open();
 
-                        //Datos del Cliente
-                        doc.Add(new Paragraph("COMPROBANTE DE REPARACIÓN - AudioTec"));
-                        doc.Add(new Paragraph("---------------------------------------------"));
-                        doc.Add(new Paragraph("Nombre: " + ordenActual.Cliente.Nombre));
-                        doc.Add(new Paragraph("DNI: " + ordenActual.Cliente.DNI));
-                        doc.Add(new Paragraph("Teléfono: " + ordenActual.Cliente.Telefono));
-                        doc.Add(new Paragraph("Dirección: " + ordenActual.Cliente.Direccion));
-                        //doc.Add(new iTextSharp.text.Paragraph("Fecha de llegada: " + ClienteActual.fechaLlegada.ToShortDateString()));
+                        using (StringReader  reader = new StringReader(pagina_texto)) {
                         
-                        ////doc.Add(new iTextSharp.text.Paragraph("Articulo: "+ ClienteActual.articulo));
-                        ////doc.Add(new iTextSharp.text.Paragraph("Marca: "+ClienteActual.marca));
-                        ////doc.Add(new iTextSharp.text.Paragraph("Modelo: " + ClienteActual.modelo));
-
-                        // En esta parte en ves de sacar los datos directamente del cliente deberia de ser de la orden
-                        /* Ejemplo
-                        doc.Add(new iTextSharp.text.Paragraph("Nombre: " + Orden.Cliente.Nombre));
-                        doc.Add(new iTextSharp.text.Paragraph("DNI: " + Orden.Cliente.DNI));
-                        doc.Add(new iTextSharp.text.Paragraph("Teléfono: " + Orden.Cliente.Telefono));
-                        doc.Add(new iTextSharp.text.Paragraph("Dirección: " + Orden.Cliente.Direccion));
-                        doc.Add(new iTextSharp.text.Paragraph("Fecha de llegada: " + Orden.Fecha_reparacion.ToShortDateString()));
-                        doc.Add(new iTextSharp.text.Paragraph("Articulo: " + Orden.Electrodomestico.Articulo));
-                        doc.Add(new iTextSharp.text.Paragraph("Marca: " + Orden.Electrodomestico.Articulo));
-                        doc.Add(new iTextSharp.text.Paragraph("Modelo: " + Orden.Electrodomestico.Articulo));
-                        */
-
-                        // Los datos de reparación, repuestos, etc.
-                        doc.Add(new Paragraph($"{textBoxDatosRep.Text}"));
+                            XMLWorkerHelper.GetInstance().ParseXHtml(writer,doc,reader);
+                        }
 
                         doc.Close();
 
                         fs.Close();
 
                         MessageBox.Show("Comprobante generado exitosamente.");
+
+                        // Guardar Info Repuesto, Diagnostico y Presupuesto
+                        OrdenLogica.CargarDiagnosticoPresupuesto(ordenActual);
+                        ElectrodomesticoLogica.CargarObservacionElectro(ordenActual.Electrodomesticos[0]);
+                        OrdenLogica.TerminarOrden(ordenActual);
                     }
 
                     // Preguntar si desea enviar por email
@@ -159,7 +155,7 @@ namespace AudioTec
                                 mensaje.To.Add(ordenActual.Cliente.Email);
                                 mensaje.Subject = "Comprobante de reparación - AudioTec";
                                 mensaje.Body = "Adjunto te enviamos el comprobante de tu reparación. ¡Gracias por confiar en nosotros!";
-                                mensaje.Attachments.Add(new Attachment(path));
+                                mensaje.Attachments.Add(new Attachment(saveDialog.FileName));
 
                                 // Configurar SMTP
                                 SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
