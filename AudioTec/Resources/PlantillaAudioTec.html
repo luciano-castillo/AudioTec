@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Factura</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        .header, .client-details, .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+            .header td, .client-details td, .table td, .table th {
+                border: 1px solid #ddd;
+                padding: 8px;
+            }
+
+            .header td {
+                border: none;
+            }
+
+            .header .company-info {
+                text-align: right;
+            }
+
+                .header .company-info p {
+                    margin: 0;
+                }
+
+            .client-details th {
+                background-color: #f2f2f2;
+            }
+
+            .table th {
+                background-color: #f2f2f2;
+                text-align: left;
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <table class="header">
+            <tr>
+                <td>
+                    <h1>AudioTec</h1>
+                    <p>Reparación de electrodomésticos</p>
+                </td>
+                <td class="company-info">
+                    <p>Calle Cualquiera 123,</p>
+                    <p>Cualquier Lugar, CP: 12345</p>
+                    <p>911-234-567</p>
+                    <p>hola@austiogenial.es</p>
+                </td>
+            </tr>
+        </table>
+        <table class="client-details">
+            <tr>
+                <th>Factura nº: 01234</th>
+                <th>Fecha de factura: 2 de junio de 2030</th>
+            </tr>
+            <tr>
+                <th>Nombre del cliente</th>
+                <td>Jose Serrano</td>
+            </tr>
+            <tr>
+                <th>Dirección</th>
+                <td>Calle Cualquiera 123, Cualquier Lugar</td>
+            </tr>
+            <tr>
+                <th>Teléfono</th>
+                <td>3624666666</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>JoseSerrano@gmail.com</td>
+            </tr>
+        </table>
+        <table class="table">
+            <tr>
+                <th>Artículo</th>
+                <th>Nombre del artículo</th>
+                <th>Diagnóstico y Datos de la Reparación</th>
+                <th>Repuestos</th>
+            </tr>
+            <tr>
+                <td colspan="4" style="text-align: right;">Total</td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

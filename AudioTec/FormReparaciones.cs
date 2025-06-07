@@ -9,19 +9,63 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using AudioTec.Modelo;
+using AudioTec.Logica;
 using System.IO;
+
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using iTextSharp.tool.xml;
 
 namespace AudioTec
 {
     public partial class FormReparaciones : UserControl
     {
         private Cliente ClienteActual;
-        public FormReparaciones(Cliente cliente)
+        private Electrodomestico eletroActual;
+        private Orden ordenActual;
+        public FormReparaciones(Orden orden)
         {
             InitializeComponent();
-            this.ClienteActual = cliente;
-            textBoxNombreRep.Text = cliente.nombre;
-            textBoxArticuloRep.Text = cliente.articulo;
+            //ordenActual = orden;
+            //textBoxNombreRep.Text = orden.Cliente.Nombre;
+            //textBoxNroOrdenRep.Text = orden.OrdenID.ToString();
+            //textBoxArticuloRep.Text = orden.Electrodomesticos[0].Articulo;
+
+            //Para que no se detenga el Programa por si se selecciona el Boton Repraciones sin una Orden
+            try
+            {
+                if (orden == null)
+                {
+                    MessageBox.Show("No se pasó una orden válida.");
+                    return;
+                }
+
+                ordenActual = orden;
+
+                if (orden.Cliente != null)
+                {
+                    textBoxNombreRep.Text = orden.Cliente.Nombre;
+                }
+
+                textBoxNroOrdenRep.Text = orden.OrdenID.ToString();
+
+                if (orden.Electrodomesticos != null && orden.Electrodomesticos.Count > 0)
+                {
+                    textBoxArticuloRep.Text = orden.Electrodomesticos[0].Articulo;
+                }
+                else
+                {
+                    textBoxArticuloRep.Text = "Sin artículo";
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar los datos: " + ex.Message);
+            }
+
+
+            //textBoxArticuloRep.Text = cliente.articulo;
         }
 
         private void FormReparaciones_Load(object sender, EventArgs e)
@@ -32,7 +76,7 @@ namespace AudioTec
 
         private void buttonGenerarComprobante_Click(object sender, EventArgs e)
         {
-            if (ClienteActual == null)
+            if (ordenActual == null)
             {
                 MessageBox.Show("No hay cliente asignado.");
                 return;
@@ -42,43 +86,56 @@ namespace AudioTec
             {
                 saveDialog.Filter = "PDF Files|*.pdf";
                 saveDialog.Title = "Guardar comprobante";
-                saveDialog.FileName = $"Comprobante {ClienteActual.nombre}-{ClienteActual.dni}.pdf";
+                saveDialog.FileName = $"Comprobante {ordenActual.Cliente.Nombre}-{ordenActual.Cliente.DNI}.pdf";
 
                 if (saveDialog.ShowDialog() == DialogResult.OK)
                 {
                     string path = saveDialog.FileName;
 
-                    using (var fs = new System.IO.FileStream(path, System.IO.FileMode.Create))
+                    using (var fs = new FileStream(path, FileMode.Create))
                     {
-                        var doc = new iTextSharp.text.Document();
-                        iTextSharp.text.pdf.PdfWriter.GetInstance(doc, fs);
+                        var doc = new Document();
+                        PdfWriter writer = PdfWriter.GetInstance(doc, fs);
 
                         doc.Open();
 
                         //Datos del Cliente
-                        doc.Add(new iTextSharp.text.Paragraph("COMPROBANTE DE REPARACIÓN - AudioTec"));
-                        doc.Add(new iTextSharp.text.Paragraph("---------------------------------------------"));
-                        doc.Add(new iTextSharp.text.Paragraph("Nombre: " + ClienteActual.nombre));
-                        doc.Add(new iTextSharp.text.Paragraph("DNI: " + ClienteActual.dni));
-                        doc.Add(new iTextSharp.text.Paragraph("Teléfono: " + ClienteActual.telefono));
-                        doc.Add(new iTextSharp.text.Paragraph("Dirección: " + ClienteActual.direccion));
-                        doc.Add(new iTextSharp.text.Paragraph("Fecha de llegada: " + ClienteActual.fechaLlegada.ToShortDateString()));
-                        doc.Add(new iTextSharp.text.Paragraph("Articulo: "+ ClienteActual.articulo));
-                        doc.Add(new iTextSharp.text.Paragraph("Marca: "+ClienteActual.marca));
-                        doc.Add(new iTextSharp.text.Paragraph("Modelo: " + ClienteActual.modelo));
+                        doc.Add(new Paragraph("COMPROBANTE DE REPARACIÓN - AudioTec"));
+                        doc.Add(new Paragraph("---------------------------------------------"));
+                        doc.Add(new Paragraph("Nombre: " + ordenActual.Cliente.Nombre));
+                        doc.Add(new Paragraph("DNI: " + ordenActual.Cliente.DNI));
+                        doc.Add(new Paragraph("Teléfono: " + ordenActual.Cliente.Telefono));
+                        doc.Add(new Paragraph("Dirección: " + ordenActual.Cliente.Direccion));
+                        //doc.Add(new iTextSharp.text.Paragraph("Fecha de llegada: " + ClienteActual.fechaLlegada.ToShortDateString()));
                         
+                        ////doc.Add(new iTextSharp.text.Paragraph("Articulo: "+ ClienteActual.articulo));
+                        ////doc.Add(new iTextSharp.text.Paragraph("Marca: "+ClienteActual.marca));
+                        ////doc.Add(new iTextSharp.text.Paragraph("Modelo: " + ClienteActual.modelo));
 
+                        // En esta parte en ves de sacar los datos directamente del cliente deberia de ser de la orden
+                        /* Ejemplo
+                        doc.Add(new iTextSharp.text.Paragraph("Nombre: " + Orden.Cliente.Nombre));
+                        doc.Add(new iTextSharp.text.Paragraph("DNI: " + Orden.Cliente.DNI));
+                        doc.Add(new iTextSharp.text.Paragraph("Teléfono: " + Orden.Cliente.Telefono));
+                        doc.Add(new iTextSharp.text.Paragraph("Dirección: " + Orden.Cliente.Direccion));
+                        doc.Add(new iTextSharp.text.Paragraph("Fecha de llegada: " + Orden.Fecha_reparacion.ToShortDateString()));
+                        doc.Add(new iTextSharp.text.Paragraph("Articulo: " + Orden.Electrodomestico.Articulo));
+                        doc.Add(new iTextSharp.text.Paragraph("Marca: " + Orden.Electrodomestico.Articulo));
+                        doc.Add(new iTextSharp.text.Paragraph("Modelo: " + Orden.Electrodomestico.Articulo));
+                        */
 
                         // Los datos de reparación, repuestos, etc.
-                        doc.Add(new iTextSharp.text.Paragraph($"{textBoxDatosRep.Text}"));
+                        doc.Add(new Paragraph($"{textBoxDatosRep.Text}"));
 
                         doc.Close();
+
+                        fs.Close();
 
                         MessageBox.Show("Comprobante generado exitosamente.");
                     }
 
                     // Preguntar si desea enviar por email
-                    if (!string.IsNullOrWhiteSpace(ClienteActual.email))
+                    if (!string.IsNullOrWhiteSpace(ordenActual.Cliente.Email))
                     {
                         DialogResult enviar = MessageBox.Show("¿Deseás enviar el comprobante al correo del cliente?", "Enviar por correo", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                         if (enviar == DialogResult.Yes)
@@ -99,7 +156,7 @@ namespace AudioTec
                                 // Crear mensaje
                                 MailMessage mensaje = new MailMessage();
                                 mensaje.From = new MailAddress(correoPropio);
-                                mensaje.To.Add(ClienteActual.email);
+                                mensaje.To.Add(ordenActual.Cliente.Email);
                                 mensaje.Subject = "Comprobante de reparación - AudioTec";
                                 mensaje.Body = "Adjunto te enviamos el comprobante de tu reparación. ¡Gracias por confiar en nosotros!";
                                 mensaje.Attachments.Add(new Attachment(path));
