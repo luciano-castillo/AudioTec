@@ -43,6 +43,8 @@
             this.textBoxRepuesto = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.textBoxPresupuesto = new System.Windows.Forms.TextBox();
+            this.textBoxGarantia = new System.Windows.Forms.TextBox();
+            this.checkBoxGarantia = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // label1
@@ -162,10 +164,31 @@
             this.textBoxPresupuesto.Size = new System.Drawing.Size(103, 20);
             this.textBoxPresupuesto.TabIndex = 14;
             // 
+            // textBoxGarantia
+            // 
+            this.textBoxGarantia.Enabled = false;
+            this.textBoxGarantia.Location = new System.Drawing.Point(712, 371);
+            this.textBoxGarantia.Name = "textBoxGarantia";
+            this.textBoxGarantia.Size = new System.Drawing.Size(282, 20);
+            this.textBoxGarantia.TabIndex = 16;
+            // 
+            // checkBoxGarantia
+            // 
+            this.checkBoxGarantia.AutoSize = true;
+            this.checkBoxGarantia.Location = new System.Drawing.Point(925, 397);
+            this.checkBoxGarantia.Name = "checkBoxGarantia";
+            this.checkBoxGarantia.Size = new System.Drawing.Size(69, 17);
+            this.checkBoxGarantia.TabIndex = 17;
+            this.checkBoxGarantia.Text = "Modificar";
+            this.checkBoxGarantia.UseVisualStyleBackColor = true;
+            this.checkBoxGarantia.CheckedChanged += new System.EventHandler(this.checkBoxGarantia_CheckedChanged);
+            // 
             // FormReparaciones
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.checkBoxGarantia);
+            this.Controls.Add(this.textBoxGarantia);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.textBoxPresupuesto);
             this.Controls.Add(this.textBoxRepuesto);
@@ -204,5 +227,7 @@
         private System.Windows.Forms.TextBox textBoxRepuesto;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox textBoxPresupuesto;
+        private System.Windows.Forms.TextBox textBoxGarantia;
+        private System.Windows.Forms.CheckBox checkBoxGarantia;
     }
 }

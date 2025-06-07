@@ -28,6 +28,9 @@ namespace AudioTec
         {
             InitializeComponent();
 
+            textBoxGarantia.Text = "30 dias de Garantia";
+
+
             //ordenActual = orden;
             //textBoxNombreRep.Text = orden.Cliente.Nombre;
             //textBoxNroOrdenRep.Text = orden.OrdenID.ToString();
@@ -90,17 +93,19 @@ namespace AudioTec
             pagina_texto = pagina_texto.Replace("@CLIENTE", ordenActual.Cliente.Nombre);
             pagina_texto = pagina_texto.Replace("@DNI", ordenActual.Cliente.DNI);
             pagina_texto = pagina_texto.Replace("@DIRECCION", ordenActual.Cliente.Direccion);
+            pagina_texto = pagina_texto.Replace("@TELEFONO", ordenActual.Cliente.Telefono);
             pagina_texto = pagina_texto.Replace("@EMAIL", ordenActual.Cliente.Email);
             pagina_texto = pagina_texto.Replace("@ARTICULO", ordenActual.Electrodomesticos[0].Articulo);
             pagina_texto = pagina_texto.Replace("@DIAGNOSTICO", textBoxDatosRep.Text);
             pagina_texto = pagina_texto.Replace("@REPUESTOS", textBoxRepuesto.Text);
             pagina_texto = pagina_texto.Replace("@TOTAL", textBoxPresupuesto.Text);
+            pagina_texto = pagina_texto.Replace("@GARANTIA", textBoxGarantia.Text);
 
             using (SaveFileDialog saveDialog = new SaveFileDialog())
             {
                 saveDialog.Filter = "PDF Files|*.pdf";
                 saveDialog.Title = "Guardar comprobante";
-                saveDialog.FileName = $"Comprobante {ordenActual.Cliente.Nombre}-{ordenActual.Cliente.DNI}.pdf";
+                saveDialog.FileName = $"Comprobante {ordenActual.Cliente.Nombre}-{ordenActual.OrdenID}.pdf";
 
                 if (saveDialog.ShowDialog() == DialogResult.OK)
                 {
@@ -180,6 +185,18 @@ namespace AudioTec
                 
             }
 
+        }
+
+        private void checkBoxGarantia_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxGarantia.Checked)
+            {
+                textBoxGarantia.Enabled = true;
+            }
+            else
+            {
+                textBoxGarantia.Enabled=false;
+            }
         }
     }
 }

@@ -42,9 +42,7 @@ namespace AudioTec
 
             InitializeComponent();
 
-
-            listBoxClientes.DataSource = listaOrdenes;
-            listBoxClientes.DisplayMember = null;
+            
             panelContenedor.Visible = false;
 
 
@@ -64,41 +62,7 @@ namespace AudioTec
 
         }
 
-        //cargar info del cliente (datos de identificacion)
-        private void listBoxClientes_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            if(listBoxClientes.SelectedItems != null)
-            {
-                Cliente clienteSeleccionado = (Cliente)listBoxClientes.SelectedItem;
-                //List<Orden> ordenes = OrdenLogica.OrdenesdeCliente(clienteSeleccionado);
 
-                Orden orden = OrdenLogica.TraerNroOrden(clienteSeleccionado.DNI);
-                // orden.Electrodomesticos = ElectrodomesticoLogica.TraerElectrodomesticos(orden);
-
-
-                //if (orden.Electrodomesticos != null && orden.Electrodomesticos.Any())
-                //{
-                //    var primero = orden.Electrodomesticos[0];
-                //    textBoxArticulo.Text = primero.Articulo;
-                //    textBoxMarca.Text = primero.Marca;
-                //    textBoxModelo.Text = primero.Modelo;
-                //}
-
-                textBoxNombre.Text = orden.Cliente.Nombre;
-                textBoxDni.Text = orden.Cliente.DNI;
-                textBoxTelefono.Text = orden.Cliente.Telefono;
-                textBoxDireccion.Text = orden.Cliente.Direccion;
-                textBoxEmail.Text = orden.Cliente.Email;
-                textBoxNroOrden.Text = orden.OrdenID.ToString();
-                
-                //textBoxNombre.Text = clienteSeleccionado.Nombre;
-                //textBoxDni.Text = clienteSeleccionado.DNI.ToString();
-                //textBoxTelefono.Text = clienteSeleccionado.Telefono.ToString();
-                //textBoxDireccion.Text = clienteSeleccionado.Direccion;
-
-                //dateTimePicker1.Value = clienteSeleccionado.fechaLlegada;
-            }
-        }
 
         private void CargarFormulario(UserControl nuevoFormulario)
         {
@@ -239,7 +203,8 @@ namespace AudioTec
                     CargarListaOrdenes();
                     CargarOrdenes(listaOrdenes);
                     LimpiarDatos();
-                    ordenSeleccionada = null;
+                    int NuevoId = Convert.ToInt32(dataGridViewOrdenes.SelectedRows[0].Cells["OrdenID"].Value); ;
+                    ordenSeleccionada.TraerOrden(NuevoId);
                 }
                 else
                 {
@@ -251,19 +216,24 @@ namespace AudioTec
 
         private void buttonActualizar_Click(object sender, EventArgs e)
         {
-            var listaClientes = ClienteLogica.Listar();
+            //var listaClientes = ClienteLogica.Listar();
 
-            if (listaClientes == null || listaClientes.Count == 0)
-            {
-                MessageBox.Show("No hay clientes registrados en la base de datos.", "Lista vacía", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                listBoxClientes.DataSource = null;
-                return;
-            }
+            //if (listaClientes == null || listaClientes.Count == 0)
+            //{
+            //    MessageBox.Show("No hay clientes registrados en la base de datos.", "Lista vacía", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //    listBoxClientes.DataSource = null;
+            //    return;
+            //}
 
-            listBoxClientes.DataSource = null;
-            listBoxClientes.DataSource = listaClientes;
-            listBoxClientes.DisplayMember = "Nombre"; // o ToString()
-            listBoxClientes.SelectedIndex = -1;
+            //listBoxClientes.DataSource = null;
+            //listBoxClientes.DataSource = listaClientes;
+            //listBoxClientes.DisplayMember = "Nombre"; // o ToString()
+            //listBoxClientes.SelectedIndex = -1;
+
+            CargarListaOrdenes();
+            CargarOrdenes(listaOrdenes);
+            LimpiarDatos();
+            
             
         }
 
