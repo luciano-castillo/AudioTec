@@ -133,41 +133,61 @@ namespace AudioTec
                 }
                 else
                 {
-                    //Se genera el cliente
-                    Cliente cliente = CrearCliente();
 
-                    ExisteClienteComprobacion(cliente);
-
-                    //Electrodomestico
-                    Electrodomestico electro = CrearElectrodomestico(cliente);
-
-                    // Crear Orden
-                    Orden orden = CrearOrden(cliente);
-                    //----------------------------------------------------------------------------------
-                    orden.AgregarElectrodomestico(electro);
-
-                    bool guardoOrden = OrdenLogica.CrearOrden(orden);
-                    if (guardoOrden)
+                    if (OrdenLogica.ExisteOrden(int.Parse(textBoxNroOrden.Text)))
                     {
-                        MessageBox.Show("Se Creo una orden");
-                        OrdenLogica.AumentarNroOrden();
-                    }
+                        Orden ordenActualizada = new Orden();
+                        ordenActualizada.OrdenID = int.Parse(textBoxNroOrden.Text);
+                        ordenActualizada.Fecha_reparacion = dateTimePicker1.Value.ToString();
+                        Cliente clienteActualizado = CrearCliente();
 
-                    bool guardoElectro = ElectrodomesticoLogica.GuardarElectrodomestico(electro);
-                    if (!guardoElectro)
-                    {
-                        MessageBox.Show("El cliente fue guardado, pero no se pudo guardar el electrodoméstico.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        ordenActualizada.Cliente = clienteActualizado;
+                        Electrodomestico electro = CrearElectrodomestico(clienteActualizado);
+
+                        OrdenLogica.Editar(ordenActualizada);
+                        ClienteLogica.Editar(clienteActualizado);
+
+                        MessageBox.Show("Los datos del cliente fueron actualizados correctamente.", "Cliente actualizado", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     else
                     {
-                        ElectrodomesticoLogica.AumentarNroElectrodomestico();
-                        bool unir = ElectrodomesticoLogica.RelacionarOrdenElectrodomestico(electro, orden);
-                        if (!unir)
+                        //Se genera el cliente
+                        Cliente cliente = CrearCliente();
+
+                        ExisteClienteComprobacion(cliente);
+                        //Electrodomestico
+                        Electrodomestico electro = CrearElectrodomestico(cliente);
+
+                        // Crear Orden
+                        Orden orden = CrearOrden(cliente);
+                        orden.OrdenID = int.Parse(textBoxNroOrden.Text);
+                        //----------------------------------------------------------------------------------
+                        orden.AgregarElectrodomestico(electro);
+
+                        bool guardoOrden = OrdenLogica.CrearOrden(orden);
+                        if (guardoOrden)
                         {
-                            MessageBox.Show("El cliente fue guardado, pero no se pudo unir los elementos.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            MessageBox.Show("Se Creo una orden");
+                            OrdenLogica.AumentarNroOrden();
                         }
-                    }                    
-                    
+
+                        bool guardoElectro = ElectrodomesticoLogica.GuardarElectrodomestico(electro);
+                        if (!guardoElectro)
+                        {
+                            MessageBox.Show("El cliente fue guardado, pero no se pudo guardar el electrodoméstico.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
+                        else
+                        {
+                            ElectrodomesticoLogica.AumentarNroElectrodomestico();
+                            bool unir = ElectrodomesticoLogica.RelacionarOrdenElectrodomestico(electro, orden);
+                            if (!unir)
+                            {
+                                MessageBox.Show("El cliente fue guardado, pero no se pudo unir los elementos.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            }
+                        }
+
+                    }
+ 
                     CargarListaOrdenes();
                     CargarOrdenes(listaOrdenes);
                     LimpiarDatos();
@@ -182,7 +202,7 @@ namespace AudioTec
 
         private void buttonNuevo_Click(object sender, EventArgs e)
         {
-            ordenSeleccionada = null;
+            //ordenSeleccionada = null;
             LimpiarDatos();
             dataGridViewOrdenes.ClearSelection();
             buttonEliminar.Enabled = false;
@@ -203,7 +223,8 @@ namespace AudioTec
                     CargarListaOrdenes();
                     CargarOrdenes(listaOrdenes);
                     LimpiarDatos();
-                    int NuevoId = Convert.ToInt32(dataGridViewOrdenes.SelectedRows[0].Cells["OrdenID"].Value); ;
+                    int NuevoId = Convert.ToInt32(dataGridViewOrdenes.Rows[0].Cells[0].Value);
+                    dataGridViewOrdenes.Rows[0].Selected = true;
                     ordenSeleccionada.TraerOrden(NuevoId);
                 }
                 else
@@ -352,7 +373,7 @@ namespace AudioTec
             };
         }
 
-        private void ExisteClienteComprobacion(Cliente cliente)
+        private bool ExisteClienteComprobacion(Cliente cliente)
         {
             bool existe = ClienteLogica.Existe(cliente.DNI);
             bool exito = false;
@@ -373,6 +394,8 @@ namespace AudioTec
                 else
                     MessageBox.Show("No se pudo guardar el cliente.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
+            return existe;
         }
 
         private Orden CrearOrden(Cliente cliente)

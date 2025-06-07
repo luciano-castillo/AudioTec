@@ -330,7 +330,7 @@ namespace AudioTec.Logica
             {                
                 con.Open();
                 string query = "UPDATE Orden " +//esapcio
-                    "SET ClienteDNI = @ClienteDni, Presupuesto = @Presupuesto, Fecha_reparacion = @fr, Fecha_retiro = @fretiro, Repuesto = @repuesto" +
+                    "SET ClienteDNI = @ClienteDni, Presupuesto = @Presupuesto, Fecha_reparacion = @fr, Fecha_retiro = @fretiro, Repuesto = @repuesto " +
                     "WHERE OrdenID = @ordenID";
 
                 SQLiteCommand cmd = new SQLiteCommand(query, con);
@@ -477,6 +477,28 @@ namespace AudioTec.Logica
                 {
                     respuesta = false;
                 }
+
+            }
+
+            return respuesta;
+        }
+
+        public static bool ExisteOrden(int id)
+        {
+            bool respuesta = true;
+
+            using (SQLiteConnection con = new SQLiteConnection(Conexion.cadena))
+            {
+                con.Open();
+                string query = "SELECT * " +
+                    "FROM Orden " +
+                    "WHERE OrdenID = @id";
+                
+                SQLiteCommand cmd = new SQLiteCommand(query, con);
+                cmd.Parameters.AddWithValue("@id", id);
+
+                int cantidad = Convert.ToInt32(cmd.ExecuteScalar());
+                respuesta = cantidad > 0;
 
             }
 
