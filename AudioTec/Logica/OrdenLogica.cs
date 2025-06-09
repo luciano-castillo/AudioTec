@@ -419,7 +419,18 @@ namespace AudioTec.Logica
 
                     if (reader.Read())
                     {
-                        resultado = int.Parse(reader["max"].ToString());
+                        if (reader["max"] != DBNull.Value)
+                        {
+                            if (!int.TryParse(reader["max"].ToString(), out resultado)) 
+                            { 
+                                resultado = 0; 
+                            }
+                        }
+                        else
+                        {
+                            resultado = 0;
+                        }
+
                     }
 
                 }

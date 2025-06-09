@@ -25,6 +25,7 @@ namespace AudioTec
 
         public Form1()
         {
+            /*
             FormInicioSesion loginForm = new FormInicioSesion();
             if (loginForm.ShowDialog() == DialogResult.OK)
             {
@@ -36,7 +37,7 @@ namespace AudioTec
                 MessageBox.Show("No se puede iniciar sin ingresar credenciales.");
                 Application.Exit();
                 return;
-            }
+            } */
 
 
 
