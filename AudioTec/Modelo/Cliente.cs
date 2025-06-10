@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace AudioTec.Modelo
 {
@@ -48,6 +49,39 @@ namespace AudioTec.Modelo
                 Email = datos.Email;
             }
             
+        }
+
+        public bool CompararCambios(Cliente cliente)
+        {
+            bool respuesta = false;
+
+            if (DNI != cliente.DNI || 
+                Nombre != cliente.Nombre || 
+                Direccion != cliente.Direccion || 
+                Telefono != cliente.Telefono ||
+                Email != cliente.Email)
+            {
+                respuesta = true;
+            }
+
+            return respuesta;
+        }
+
+        public void EditarCliente(Cliente cliente)
+        {
+            if (ClienteLogica.Editar(cliente, DNI))
+            {
+                DNI = cliente.DNI;
+                Nombre = cliente.Nombre;
+                Direccion = cliente.Direccion;
+                Telefono = cliente.Telefono;
+                Email = cliente.Email;
+            }
+            else
+            {
+                MessageBox.Show("No se pudo editar el cliente");
+            }      
+
         }
 
     }

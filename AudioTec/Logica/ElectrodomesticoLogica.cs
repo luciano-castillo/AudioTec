@@ -145,6 +145,36 @@ namespace AudioTec.Logica
             return respuesta;
         }
 
+        public static bool EditarElectrodomestico(Electrodomestico electro, string id)
+        {
+            bool respuesta = false;
+            int idElectro = int.Parse(id);
+
+            using (SQLiteConnection con = new SQLiteConnection(Conexion.cadena))
+            {
+                con.Open();
+                string query = "UPDATE Electrodomestico " +
+                    "set Articulo = @articulo, Modelo = @modelo, Marca = @marca, Observacion = @observacion " +
+                    "where ElectrodomesticoID = @id";
+
+                SQLiteCommand cmd = new SQLiteCommand(query, con);
+                cmd.Parameters.Add(new SQLiteParameter("@id", idElectro));
+                cmd.Parameters.Add(new SQLiteParameter("@articulo", electro.Articulo));
+                cmd.Parameters.Add(new SQLiteParameter("@modelo", electro.Modelo));
+                cmd.Parameters.Add(new SQLiteParameter("@marca", electro.Marca));
+                cmd.Parameters.Add(new SQLiteParameter("@observacion", electro.Observacion));
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                if (cmd.ExecuteNonQuery() > 0)
+                {
+                    respuesta = true;
+                }
+
+            }
+
+            return respuesta;
+        }
+
 
         // Comprueba si ya existe un electrodomestico
         public static bool Existe(string id)

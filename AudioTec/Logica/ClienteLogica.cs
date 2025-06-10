@@ -124,6 +124,35 @@ namespace AudioTec.Logica
 
         }
 
+        public static bool Editar(Cliente obj, string dniviejo)
+        {
+            bool respuesta = true;
+
+            using (SQLiteConnection con = new SQLiteConnection(Conexion.cadena))
+            {
+                con.Open();
+                string query = "update Cliente " +
+                    "set DNI = @dni, Nombre = @nombre, Direccion = @direccion, Telefono = @telefono, Email = @email " +
+                    "where DNI = @dniviejo";
+
+                SQLiteCommand cmd = new SQLiteCommand(query, con);
+                cmd.Parameters.Add(new SQLiteParameter("@dni", obj.DNI));
+                cmd.Parameters.Add(new SQLiteParameter("@nombre", obj.Nombre));
+                cmd.Parameters.Add(new SQLiteParameter("@direccion", obj.Direccion));
+                cmd.Parameters.Add(new SQLiteParameter("@telefono", obj.Telefono));
+                cmd.Parameters.Add(new SQLiteParameter("@email", obj.Email));
+                cmd.Parameters.Add(new SQLiteParameter("@dniviejo", dniviejo));
+                cmd.CommandType = System.Data.CommandType.Text;
+
+                if (cmd.ExecuteNonQuery() < 1)
+                {
+                    respuesta = false;
+                }
+            }
+            return respuesta;
+
+        }
+
 
         // Trae un cliente asociado a una orden
         public static Cliente TraerCliente(Orden obj)

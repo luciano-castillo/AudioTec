@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace AudioTec.Modelo
 {
@@ -30,6 +31,47 @@ namespace AudioTec.Modelo
                     respuesta = ElectrodomesticoLogica.GuardarElectrodomestico(this);
                 }
                 
+            }
+
+            return respuesta;
+        }
+
+        public bool CompararElectrodomestico(Electrodomestico electro)
+        {
+            bool respuesta = false;
+
+            if (Articulo != electro.Articulo || 
+                Modelo != electro.Modelo || 
+                Marca != electro.Marca)
+            {
+                respuesta = true;
+            }
+
+            return respuesta;
+        }
+
+        public void EditarElectrodomestico(Electrodomestico electro)
+        {
+
+            if (ElectrodomesticoLogica.EditarElectrodomestico(electro, ElectrodomesticoID))
+            {
+                Articulo = electro.Articulo;
+                Modelo = electro.Modelo;
+                Marca = electro.Marca;
+            }
+            else
+            {
+                MessageBox.Show("No se pudo editar el electrodomestico!");
+            }
+        }
+
+        public bool Vacio()
+        {
+            bool respuesta = false;
+
+            if (Articulo != null)
+            {
+                respuesta = true;
             }
 
             return respuesta;

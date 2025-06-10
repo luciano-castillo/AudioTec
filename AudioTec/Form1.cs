@@ -137,18 +137,33 @@ namespace AudioTec
 
                     if (OrdenLogica.ExisteOrden(int.Parse(textBoxNroOrden.Text)))
                     {
-                        Orden ordenActualizada = new Orden();
-                        ordenActualizada.OrdenID = int.Parse(textBoxNroOrden.Text);
-                        ordenActualizada.Fecha_reparacion = dateTimePicker1.Value.ToString();
-                        Cliente clienteActualizado = CrearCliente();
+                        Cliente clienteActualizar = CrearCliente();
+                        Electrodomestico electroActualizar;
 
-                        ordenActualizada.Cliente = clienteActualizado;
-                        Electrodomestico electro = CrearElectrodomestico(clienteActualizado);
+                        if (int.Parse(textBoxNroOrden.Text) != ordenSeleccionada.OrdenID)
+                        {
+                            ordenSeleccionada = OrdenLogica.TraerOrden(int.Parse(textBoxNroOrden.Text));
+                        }
 
-                        OrdenLogica.Editar(ordenActualizada);
-                        ClienteLogica.Editar(clienteActualizado);
+                        if (ordenSeleccionada.TieneElectrodomestico())
+                        {
+                            electroActualizar = new Electrodomestico
+                            {
+                                Articulo = textBoxArticulo.Text,
+                                Modelo = textBoxModelo.Text,
+                                Marca = textBoxMarca.Text,
+                                Observacion = textBoxObservaciones.Text
+                            };
+                        }
+                        else
+                        {
+                            electroActualizar = CrearElectrodomestico(clienteActualizar);
+                        }
 
+                        ordenSeleccionada.EditarOrden(clienteActualizar, electroActualizar);
+                        
                         MessageBox.Show("Los datos del cliente fueron actualizados correctamente.", "Cliente actualizado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        
                     }
                     else
                     {

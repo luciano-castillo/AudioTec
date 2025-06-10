@@ -1,4 +1,5 @@
 ﻿using AudioTec.Logica;
+using Org.BouncyCastle.Asn1.X500;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -73,6 +74,45 @@ namespace AudioTec.Modelo
         }
 
         // Editar orden
+        public bool EditarOrden(string nombreC, string dniC, string telefonoC, string direccionC, string emailC, string articulo, string marca, string modelo, string observacion)
+        {
+            bool respuesta = false;
+
+            return respuesta;
+        }
+
+        public bool EditarOrden(Cliente cliente, Electrodomestico electro)
+        {
+            bool respuesta = false;
+
+            if (Cliente.CompararCambios(cliente))
+            {
+                // aplicar cambios
+                Cliente.EditarCliente(cliente); 
+                respuesta = true;
+            }
+
+            if (Electrodomesticos.Count > 0)
+            {
+                // Si tiene un electro aplica cambio
+                if (Electrodomesticos[0].CompararElectrodomestico(electro))
+                {
+                    Electrodomesticos[0].EditarElectrodomestico(electro);
+                    respuesta = true;
+                }
+            } 
+            else if (!electro.Vacio())
+            {
+                // si no tiene crea y lo une
+                ElectrodomesticoLogica.GuardarElectrodomestico(electro);
+                ElectrodomesticoLogica.AumentarNroElectrodomestico();
+                bool unir = ElectrodomesticoLogica.RelacionarOrdenElectrodomestico(electro, this);
+
+                respuesta = true;
+            }
+
+            return respuesta;
+        }
 
         // Traer una orden vacia y cargar los datos desde la BD
         public void TraerOrden(int id)
@@ -98,6 +138,18 @@ namespace AudioTec.Modelo
 
             }          
 
+        }
+
+        public bool TieneElectrodomestico()
+        {
+            bool respuesta = false;
+
+            if (Electrodomesticos.Count > 0)
+            {
+                respuesta = true;
+            }
+
+            return respuesta;
         }
 
         public override string ToString()
