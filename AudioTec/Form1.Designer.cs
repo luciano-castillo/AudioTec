@@ -84,6 +84,8 @@
             this.Nombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DNI = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButtonOpciones = new System.Windows.Forms.ToolStripButton();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -146,7 +148,9 @@
             this.toolStripButtonIdentificacion,
             this.toolStripSeparator1,
             this.toolStripButtonReparaciones,
-            this.toolStripSeparator2});
+            this.toolStripSeparator2,
+            this.toolStripButtonOpciones,
+            this.toolStripSeparator3});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(1207, 63);
@@ -679,6 +683,24 @@
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 63);
+            // 
+            // toolStripButtonOpciones
+            // 
+            this.toolStripButtonOpciones.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.toolStripButtonOpciones.AutoSize = false;
+            this.toolStripButtonOpciones.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonOpciones.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonOpciones.Image")));
+            this.toolStripButtonOpciones.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonOpciones.Name = "toolStripButtonOpciones";
+            this.toolStripButtonOpciones.Size = new System.Drawing.Size(70, 60);
+            this.toolStripButtonOpciones.Text = "toolStripButton1";
+            this.toolStripButtonOpciones.Click += new System.EventHandler(this.toolStripButtonOpciones_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -794,6 +816,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Nombre;
         private System.Windows.Forms.DataGridViewTextBoxColumn DNI;
         private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.ToolStripButton toolStripButtonOpciones;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
     }
 }
 

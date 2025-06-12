@@ -24,12 +24,13 @@ namespace AudioTec
         private Cliente ClienteActual;
         private Electrodomestico eletroActual;
         private Orden ordenActual;
-        public FormReparaciones(Orden orden)
+        private Cliente empresa;
+        public FormReparaciones(Orden orden, Cliente empresa)
         {
             InitializeComponent();
 
             textBoxGarantia.Text = "30 dias de Garantia";
-
+            this.empresa = empresa;
 
             //ordenActual = orden;
             //textBoxNombreRep.Text = orden.Cliente.Nombre;
@@ -100,6 +101,10 @@ namespace AudioTec
             pagina_texto = pagina_texto.Replace("@REPUESTOS", textBoxRepuesto.Text);
             pagina_texto = pagina_texto.Replace("@TOTAL", textBoxPresupuesto.Text);
             pagina_texto = pagina_texto.Replace("@GARANTIA", textBoxGarantia.Text);
+            // DATOS EMPRESA
+            pagina_texto = pagina_texto.Replace("@EMPRESADIRE", empresa.Direccion);
+            pagina_texto = pagina_texto.Replace("@EMPRESATELEFONO", empresa.Telefono);
+            pagina_texto = pagina_texto.Replace("@EMPRESAEMAIL", empresa.Email);
 
             using (SaveFileDialog saveDialog = new SaveFileDialog())
             {

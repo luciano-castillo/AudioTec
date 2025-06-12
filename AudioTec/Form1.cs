@@ -18,6 +18,7 @@ namespace AudioTec
         List<Cliente> listaClientes = ClienteLogica.Listar();
         List<Orden> listaOrdenes = OrdenLogica.TraerOrdenes();
         Orden ordenSeleccionada = new Orden();
+        Cliente empresa = new Cliente();
         //List<Orden> listaOrdenes = new List<Orden>();
 
         private string correoGmail;
@@ -46,7 +47,7 @@ namespace AudioTec
             
             panelContenedor.Visible = false;
 
-
+            CargarEmpresa();
             CargarNroOrden();
             CargarOrdenes(listaOrdenes);
             dataGridViewOrdenes.ClearSelection();
@@ -90,7 +91,7 @@ namespace AudioTec
             {
                 //MessageBox.Show($"Cantidad de electrodomésticos: {ordenSeleccionada.Electrodomesticos?.Count}");
 
-                FormReparaciones reparaciones = new FormReparaciones(ordenSeleccionada);
+                FormReparaciones reparaciones = new FormReparaciones(ordenSeleccionada, empresa);
                 panelContenedor.Visible = true;
                 panelContenedor.BringToFront();
                 panelContenedor.Dock = DockStyle.Fill;
@@ -428,6 +429,22 @@ namespace AudioTec
             // Devuelve true si esta activado
             CargarListaOrdenes();
             CargarOrdenes(listaOrdenes);
+        }
+
+        private void toolStripButtonOpciones_Click(object sender, EventArgs e)
+        {
+            VentanaEmergenteDatos ventana = new VentanaEmergenteDatos(empresa);
+            ventana.StartPosition = FormStartPosition.CenterParent;
+            ventana.ShowDialog();
+            empresa = ventana.empresa;
+        }
+
+        private void CargarEmpresa()
+        {
+            if (ClienteLogica.Existe("1"))
+            {
+                empresa = ClienteLogica.TraerCliente("1");
+            }
         }
     }
 }
