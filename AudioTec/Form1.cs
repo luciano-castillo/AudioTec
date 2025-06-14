@@ -10,6 +10,8 @@ using AudioTec.Modelo;
 using AudioTec.Logica;
 using System.Windows.Forms;
 using Org.BouncyCastle.Asn1.X500;
+using System.Net.Mail;
+using System.Net;
 
 namespace AudioTec
 {
@@ -56,6 +58,7 @@ namespace AudioTec
 
             toolStripButtonIdentificacion.Image = Image.FromFile(@"Iconos/iconoIdentificacion.png");
             toolStripButtonReparaciones.Image = Image.FromFile(@"Iconos/imagenReparacion.png");
+            toolStripButtonOpciones.Image = Image.FromFile(@"Iconos/imagenOpciones.png");
 
         }
 
@@ -444,6 +447,39 @@ namespace AudioTec
             if (ClienteLogica.Existe("1"))
             {
                 empresa = ClienteLogica.TraerCliente("1");
+            }
+        }
+
+        private void textBoxDni_Leave(object sender, EventArgs e)
+        {
+            string dni = textBoxDni.Text;
+
+            if (!string.IsNullOrEmpty(dni))
+            {
+                if (ClienteLogica.Existe(dni))
+                {
+                    DialogResult enviar = MessageBox.Show("El Cliente ya existe. ¿Deseas autocompletar el formulario?", 
+                        "Enviar por correo", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                    if (enviar == DialogResult.Yes)
+                    {
+                        try
+                        {
+                            Cliente nuevoCliente = ClienteLogica.TraerCliente(dni);
+
+                            textBoxNombre.Text = nuevoCliente.Nombre;
+                            textBoxTelefono.Text = nuevoCliente.Telefono;
+                            textBoxEmail.Text = nuevoCliente.Email;
+                            textBoxDireccion.Text = nuevoCliente.Direccion;
+
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Error al completar los campos:\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                }
+
             }
         }
     }

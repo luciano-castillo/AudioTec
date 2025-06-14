@@ -40,6 +40,8 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButtonReparaciones = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButtonOpciones = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.buttonNuevo = new System.Windows.Forms.Button();
             this.buttonActualizar = new System.Windows.Forms.Button();
@@ -84,8 +86,6 @@
             this.Nombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DNI = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripButtonOpciones = new System.Windows.Forms.ToolStripButton();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -188,6 +188,24 @@
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 63);
+            // 
+            // toolStripButtonOpciones
+            // 
+            this.toolStripButtonOpciones.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.toolStripButtonOpciones.AutoSize = false;
+            this.toolStripButtonOpciones.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonOpciones.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonOpciones.Image")));
+            this.toolStripButtonOpciones.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonOpciones.Name = "toolStripButtonOpciones";
+            this.toolStripButtonOpciones.Size = new System.Drawing.Size(70, 60);
+            this.toolStripButtonOpciones.Text = "toolStripButton1";
+            this.toolStripButtonOpciones.Click += new System.EventHandler(this.toolStripButtonOpciones_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 63);
             // 
             // tableLayoutPanel1
             // 
@@ -385,6 +403,7 @@
             this.textBoxDni.Name = "textBoxDni";
             this.textBoxDni.Size = new System.Drawing.Size(313, 20);
             this.textBoxDni.TabIndex = 1;
+            this.textBoxDni.Leave += new System.EventHandler(this.textBoxDni_Leave);
             // 
             // textBoxTelefono
             // 
@@ -682,24 +701,6 @@
             this.checkBox1.Text = "No terminados";
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
-            // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 63);
-            // 
-            // toolStripButtonOpciones
-            // 
-            this.toolStripButtonOpciones.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.toolStripButtonOpciones.AutoSize = false;
-            this.toolStripButtonOpciones.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButtonOpciones.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonOpciones.Image")));
-            this.toolStripButtonOpciones.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonOpciones.Name = "toolStripButtonOpciones";
-            this.toolStripButtonOpciones.Size = new System.Drawing.Size(70, 60);
-            this.toolStripButtonOpciones.Text = "toolStripButton1";
-            this.toolStripButtonOpciones.Click += new System.EventHandler(this.toolStripButtonOpciones_Click);
             // 
             // Form1
             // 
