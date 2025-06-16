@@ -6,18 +6,29 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AudioTec.Modelo;
+using AudioTec.Logica;
 using System.Windows.Forms;
+using Org.BouncyCastle.Asn1.X500;
+using System.Net.Mail;
+using System.Net;
 
 namespace AudioTec
 {
     public partial class Form1 : Form
     {
-        List<Cliente> listaClientes = new List<Cliente>();
+        List<Cliente> listaClientes = ClienteLogica.Listar();
+        List<Orden> listaOrdenes = OrdenLogica.TraerOrdenes();
+        Orden ordenSeleccionada = new Orden();
+        Cliente empresa = new Cliente();
+        //List<Orden> listaOrdenes = new List<Orden>();
+
         private string correoGmail;
         private string claveAppGmail;
 
         public Form1()
         {
+            /*
             FormInicioSesion loginForm = new FormInicioSesion();
             if (loginForm.ShowDialog() == DialogResult.OK)
             {
@@ -29,17 +40,26 @@ namespace AudioTec
                 MessageBox.Show("No se puede iniciar sin ingresar credenciales.");
                 Application.Exit();
                 return;
-            }
+            } */
+
+
+
             InitializeComponent();
-            listaClientes.Add(new Cliente("Juan Pérez",111111111, "Calle Ficticia 123", "123-456-789"));
-            listaClientes.Add(new Cliente("Ana Gómez", 222222222,"Avenida Principal 456", "987-654-321"));
-            listaClientes.Add(new Cliente("Luis Martínez",333333333, "Calle Secundaria 789", "555-555-555"));
-            listBoxClientes.DataSource = listaClientes;
+
+            
             panelContenedor.Visible = false;
-            listaClientes[0].fechaLlegada = new DateTime(2025, 1, 22);
-            listaClientes[1].fechaLlegada = new DateTime(2025, 3, 5);
-            listaClientes[2].fechaLlegada = new DateTime(2024, 12, 27);
-            //panelContenedor.Dock = DockStyle.Fill;
+
+            CargarEmpresa();
+            CargarNroOrden();
+            CargarOrdenes(listaOrdenes);
+            dataGridViewOrdenes.ClearSelection();
+
+            toolStrip1.ImageScalingSize = new Size(32, 32); // tamaño imagen antes de cargar
+
+            toolStripButtonIdentificacion.Image = Image.FromFile(@"Iconos/iconoIdentificacion.png");
+            toolStripButtonReparaciones.Image = Image.FromFile(@"Iconos/imagenReparacion.png");
+            toolStripButtonOpciones.Image = Image.FromFile(@"Iconos/imagenOpciones.png");
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -47,20 +67,7 @@ namespace AudioTec
 
         }
 
-        //cargar info del cliente (datos de identificacion)
-        private void listBoxClientes_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            if(listBoxClientes.SelectedItems != null)
-            {
-                Cliente clienteSeleccionado = (Cliente)listBoxClientes.SelectedItem;
 
-                textBoxNombre.Text = clienteSeleccionado.nombre;
-                textBoxDni.Text = clienteSeleccionado.dni.ToString();
-                textBoxTelefono.Text = clienteSeleccionado.telefono.ToString();
-                textBoxDireccion.Text = clienteSeleccionado.direccion;
-                dateTimePicker1.Value = clienteSeleccionado.fechaLlegada;
-            }
-        }
 
         private void CargarFormulario(UserControl nuevoFormulario)
         {
@@ -83,31 +90,40 @@ namespace AudioTec
 
         private void toolStripButtonReparaciones_Click(object sender, EventArgs e)
         {
-            if (listBoxClientes.SelectedItems != null) 
+            if(dataGridViewOrdenes.SelectedRows != null)
             {
-                Cliente clienteSeleccinado = (Cliente)listBoxClientes.SelectedItem;
-                FormReparaciones reparaciones = new FormReparaciones(clienteSeleccinado);
+                //MessageBox.Show($"Cantidad de electrodomésticos: {ordenSeleccionada.Electrodomesticos?.Count}");
+
+                FormReparaciones reparaciones = new FormReparaciones(ordenSeleccionada, empresa);
                 panelContenedor.Visible = true;
                 panelContenedor.BringToFront();
                 panelContenedor.Dock = DockStyle.Fill;
                 CargarFormulario(reparaciones);
             }
+
         }
 
         private void buttonBuscar_Click(object sender, EventArgs e)
         {
-            String nombreBuscar = textBoxBuscarNombre.Text.Trim().ToLower();
-            String dniBuscar = textBoxBuscarDni.Text.Trim();
 
-            var clientesFiltrados = listaClientes.Where(cliente => 
-            (String.IsNullOrWhiteSpace(nombreBuscar) || cliente.nombre.Trim().ToLower().Contains(nombreBuscar)) &&
-             (String.IsNullOrWhiteSpace(dniBuscar) || cliente.dni.ToString().Contains(dniBuscar))).ToList();
+            string dniBuscar = textBoxBuscarDni.Text.Trim();
+            int ordenBuscar;
+            string nombreBuscar = textBoxBuscarNombre.Text.Trim();
 
-            listBoxClientes.DataSource = null;
-            listBoxClientes.DataSource = clientesFiltrados;
-            listBoxClientes.SelectedIndex = -1; // evita seleccion automatica del listboxCliente
-            listBoxClientes.Refresh();
-            listBoxClientes.Update();
+            if (textBoxBuscarNroOrden.Text.Trim() == "")
+            {
+                ordenBuscar = 0;
+            }
+            else
+            {
+                ordenBuscar = int.Parse(textBoxBuscarNroOrden.Text.Trim());
+            }
+
+            List<Orden> resultadoBusqueda = new List<Orden>();
+            resultadoBusqueda = OrdenLogica.TraerOrdenes(ordenBuscar, dniBuscar, nombreBuscar);
+            CargarOrdenes(resultadoBusqueda);
+            LimpiarDatos();
+
         }
 
         private void buttonGuardarCliente_Click(object sender, EventArgs e)
@@ -115,115 +131,355 @@ namespace AudioTec
             try
             {
                 // Validaciones mínimas
-                if (string.IsNullOrWhiteSpace(textBoxNombre.Text) ||
-                    string.IsNullOrWhiteSpace(textBoxDni.Text) ||
-                    string.IsNullOrWhiteSpace(textBoxDireccion.Text) ||
-                    string.IsNullOrWhiteSpace(textBoxTelefono.Text))
+                if (!ValidarCampos())
                 {
                     MessageBox.Show("Por favor, completá todos los campos antes de guardar.");
                     return;
                 }
-
-                string nombre = textBoxNombre.Text.Trim(); //el Trim quita espacios en blanco 
-                int dni = int.Parse(textBoxDni.Text.Trim());
-                string direccion = textBoxDireccion.Text.Trim();
-                String telefono = textBoxTelefono.Text.Trim();
-                String email = textBoxEmail.Text.Trim();
-
-                String articulo = textBoxArticulo.Text.Trim();
-                String marca = textBoxMarca.Text.Trim();
-                String modelo = textBoxModelo.Text.Trim();
-                DateTime fechaLlegada = dateTimePicker1.Value;
-
-                // Buscar si ya existe un cliente con ese DNI
-                Cliente clienteExistente = listaClientes.FirstOrDefault(c => c.dni == dni);
-
-                if (clienteExistente != null)
-                {
-                    // Sobrescribir datos del cliente existente
-                    clienteExistente.nombre = nombre;
-                    clienteExistente.direccion = direccion;
-                    clienteExistente.telefono = telefono;
-                    clienteExistente.fechaLlegada = fechaLlegada;
-                    clienteExistente.email = email;
-
-                    clienteExistente.articulo = articulo;                    
-                    clienteExistente.modelo = modelo;
-                    clienteExistente.marca = marca;
-
-                    MessageBox.Show("Los datos del cliente fueron actualizados correctamente.", "Cliente actualizado", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
                 else
                 {
-                    // Crear nuevo cliente
-                    Cliente nuevoCliente = new Cliente(nombre, dni, direccion, telefono);
-                    nuevoCliente.email = email;
-                    nuevoCliente.fechaLlegada = fechaLlegada;
 
-                    nuevoCliente.articulo = articulo;
-                    nuevoCliente.modelo = modelo;
-                    nuevoCliente.marca = marca;
-                    listaClientes.Add(nuevoCliente);
-                }
+                    if (OrdenLogica.ExisteOrden(int.Parse(textBoxNroOrden.Text)))
+                    {
+                        Cliente clienteActualizar = CrearCliente();
+                        Electrodomestico electroActualizar;
 
-                // Actualizar el ListBox
-                listBoxClientes.DataSource = null;
-                listBoxClientes.DataSource = listaClientes;
-            }
-            catch (FormatException)
-            {
-                MessageBox.Show("Verificá que el DNI y el teléfono contengan solo números.", "Error de formato", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        if (int.Parse(textBoxNroOrden.Text) != ordenSeleccionada.OrdenID)
+                        {
+                            ordenSeleccionada = OrdenLogica.TraerOrden(int.Parse(textBoxNroOrden.Text));
+                        }
+
+                        if (ordenSeleccionada.TieneElectrodomestico())
+                        {
+                            electroActualizar = new Electrodomestico
+                            {
+                                Articulo = textBoxArticulo.Text,
+                                Modelo = textBoxModelo.Text,
+                                Marca = textBoxMarca.Text,
+                                Observacion = textBoxObservaciones.Text
+                            };
+                        }
+                        else
+                        {
+                            electroActualizar = CrearElectrodomestico(clienteActualizar);
+                        }
+
+                        ordenSeleccionada.EditarOrden(clienteActualizar, electroActualizar);
+                        
+                        MessageBox.Show("Los datos del cliente fueron actualizados correctamente.", "Cliente actualizado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        
+                    }
+                    else
+                    {
+                        //Se genera el cliente
+                        Cliente cliente = CrearCliente();
+
+                        ExisteClienteComprobacion(cliente);
+                        //Electrodomestico
+                        Electrodomestico electro = CrearElectrodomestico(cliente);
+
+                        // Crear Orden
+                        Orden orden = CrearOrden(cliente);
+                        orden.OrdenID = int.Parse(textBoxNroOrden.Text);
+                        //----------------------------------------------------------------------------------
+                        orden.AgregarElectrodomestico(electro);
+
+                        bool guardoOrden = OrdenLogica.CrearOrden(orden);
+                        if (guardoOrden)
+                        {
+                            MessageBox.Show("Se Creo una orden");
+                            OrdenLogica.AumentarNroOrden();
+                        }
+
+                        bool guardoElectro = ElectrodomesticoLogica.GuardarElectrodomestico(electro);
+                        if (!guardoElectro)
+                        {
+                            MessageBox.Show("El cliente fue guardado, pero no se pudo guardar el electrodoméstico.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
+                        else
+                        {
+                            ElectrodomesticoLogica.AumentarNroElectrodomestico();
+                            bool unir = ElectrodomesticoLogica.RelacionarOrdenElectrodomestico(electro, orden);
+                            if (!unir)
+                            {
+                                MessageBox.Show("El cliente fue guardado, pero no se pudo unir los elementos.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            }
+                        }
+
+                    }
+ 
+                    CargarListaOrdenes();
+                    CargarOrdenes(listaOrdenes);
+                    LimpiarDatos();
+                }                
+
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Ocurrió un error al guardar el cliente:\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Ocurrió un error al guardar los datos:\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
         }
 
         private void buttonNuevo_Click(object sender, EventArgs e)
         {
-            textBoxNombre.Text = null;
-            textBoxDni.Text = null;
-            textBoxDireccion.Text = null;
-            textBoxTelefono.Text = null;
-            dateTimePicker1.Value= DateTime.Now;
-            textBoxArticulo.Text = null;
-            textBoxMarca.Text = null;
-            textBoxModelo.Text = null;
-            textBoxObservaciones.Text = null;
+            //ordenSeleccionada = null;
+            LimpiarDatos();
+            dataGridViewOrdenes.ClearSelection();
+            buttonEliminar.Enabled = false;
         }
 
         private void buttonEliminar_Click(object sender, EventArgs e)
         {
-            if (listBoxClientes.SelectedItem != null)
+            if (dataGridViewOrdenes.SelectedRows != null)
             {
-                // Confirmación
                 var resultado = MessageBox.Show("¿Estás seguro que deseas eliminar este cliente?", "Confirmar eliminación", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
                 if (resultado == DialogResult.Yes)
                 {
-                    Cliente clienteSeleccionado = (Cliente)listBoxClientes.SelectedItem;
+                    int ordenID = Convert.ToInt32(dataGridViewOrdenes.SelectedRows[0].Cells["OrdenID"].Value);
 
-                    listaClientes.Remove(clienteSeleccionado);
-
-                    // Actualizar el ListBox
-                    listBoxClientes.DataSource = null;
-                    listBoxClientes.DataSource = listaClientes;
-
-                    // Limpiar los campos
-                    textBoxNombre.Text = "";
-                    textBoxDni.Text = "";
-                    textBoxTelefono.Text = "";
-                    textBoxDireccion.Text = "";
-                    dateTimePicker1.Value = DateTime.Now;
-
-                    MessageBox.Show("Cliente eliminado con éxito.");
+                    OrdenLogica.EliminarOrden(ordenID);
+                    ElectrodomesticoLogica.EliminarElectrodomesticosSinOrden();
+                    CargarListaOrdenes();
+                    CargarOrdenes(listaOrdenes);
+                    LimpiarDatos();
+                    int NuevoId = Convert.ToInt32(dataGridViewOrdenes.Rows[0].Cells[0].Value);
+                    dataGridViewOrdenes.Rows[0].Selected = true;
+                    ordenSeleccionada.TraerOrden(NuevoId);
                 }
+                else
+                {
+                    MessageBox.Show("Seleccioná un cliente para eliminar.");
+                }
+            }
+
+        }
+
+        private void buttonActualizar_Click(object sender, EventArgs e)
+        {
+            //var listaClientes = ClienteLogica.Listar();
+
+            //if (listaClientes == null || listaClientes.Count == 0)
+            //{
+            //    MessageBox.Show("No hay clientes registrados en la base de datos.", "Lista vacía", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //    listBoxClientes.DataSource = null;
+            //    return;
+            //}
+
+            //listBoxClientes.DataSource = null;
+            //listBoxClientes.DataSource = listaClientes;
+            //listBoxClientes.DisplayMember = "Nombre"; // o ToString()
+            //listBoxClientes.SelectedIndex = -1;
+
+            CargarListaOrdenes();
+            CargarOrdenes(listaOrdenes);
+            LimpiarDatos();
+            
+            
+        }
+
+        // Metodos propios
+        private void CargarNroOrden()
+        {
+            textBoxNroOrden.Text = (OrdenLogica.NroOrdenActual + 1).ToString();
+        }
+
+        private void CargarOrdenes(List<Orden> listaOrdenes)
+        {
+            dataGridViewOrdenes.Rows.Clear();
+            foreach (var item in listaOrdenes)
+            {
+                dataGridViewOrdenes.Rows.Add(new object[] { item.OrdenID, item.Cliente.Nombre, item.Cliente.DNI });
+            }
+            dataGridViewOrdenes.CurrentCell = null;
+            dataGridViewOrdenes.ClearSelection();
+        }
+
+        private void CargarDatos(Orden orden)
+        {
+            textBoxNroOrden.Text = orden.OrdenID.ToString();
+            textBoxNombre.Text = orden.Cliente.Nombre;
+            textBoxDni.Text = orden.Cliente.DNI;
+            textBoxTelefono.Text = orden.Cliente.Telefono;
+            textBoxDireccion.Text = orden.Cliente.Direccion;
+            textBoxEmail.Text = orden.Cliente.Email;
+
+            if (orden.Electrodomesticos.Count > 0)
+            {
+                textBoxArticulo.Text = orden.Electrodomesticos[0].Articulo;
+                textBoxMarca.Text = orden.Electrodomesticos[0].Marca;
+                textBoxModelo.Text = orden.Electrodomesticos[0].Modelo;
+                textBoxObservaciones.Text = orden.Electrodomesticos[0].Observacion;
+            }
+            
+        }
+
+        // Limpia todos los textos y lo deja vacio, trae el nro de orden actual y fecha
+        private void LimpiarDatos()
+        {
+            CargarNroOrden();
+            textBoxNombre.Clear();
+            textBoxDni.Clear();
+            textBoxTelefono.Clear();
+            textBoxDireccion.Clear();
+            textBoxEmail.Clear();
+            textBoxArticulo.Clear();
+            textBoxMarca.Clear();
+            textBoxModelo.Clear();
+            textBoxObservaciones.Clear();
+            dateTimePicker1.Value = DateTime.Now;
+        }
+
+        private void CargarListaOrdenes()
+        {
+            //listaOrdenes = OrdenLogica.TraerOrdenes();
+
+            if (checkBox1.Checked)
+            {
+                listaOrdenes = OrdenLogica.TraerOrdenesNoTerminadas();
             }
             else
             {
-                MessageBox.Show("Seleccioná un cliente para eliminar.");
+                listaOrdenes = OrdenLogica.TraerOrdenes();
+            }
+        }
+
+        // Al hacer click un elemento de la tabla, carga los datos
+        private void dataGridViewOrdenes_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewOrdenes.SelectedRows.Count > 0)
+            {
+                int ordenID = Convert.ToInt32(dataGridViewOrdenes.SelectedRows[0].Cells["OrdenID"].Value);
+
+                //Orden ordenSeleccionada = new Orden();
+                ordenSeleccionada.TraerOrden(ordenID);
+                ordenSeleccionada.Electrodomesticos = ElectrodomesticoLogica.TraerElectrodomesticos(ordenSeleccionada);
+                LimpiarDatos();
+                CargarDatos(ordenSeleccionada);
+                buttonEliminar.Enabled = true;
+            }
+        }
+
+        private bool ValidarCampos()
+        {
+            return !(string.IsNullOrWhiteSpace(textBoxNombre.Text) ||
+                     string.IsNullOrWhiteSpace(textBoxDni.Text) ||
+                     string.IsNullOrWhiteSpace(textBoxDireccion.Text) ||
+                     string.IsNullOrWhiteSpace(textBoxTelefono.Text) ||
+                     string.IsNullOrWhiteSpace(textBoxArticulo.Text));
+        }
+
+        private Cliente CrearCliente()
+        {
+            return new Cliente {
+                DNI = textBoxDni.Text.Trim(),//el Trim quita espacios en blanco 
+                Nombre = textBoxNombre.Text.Trim(),
+                Direccion = textBoxDireccion.Text.Trim(),
+                Telefono = textBoxTelefono.Text.Trim(),
+                Email = textBoxEmail.Text.Trim()
+            };
+        }
+
+        private Electrodomestico CrearElectrodomestico(Cliente cliente)
+        {
+            return new Electrodomestico
+            {
+                ElectrodomesticoID = (ElectrodomesticoLogica.electroIDActual + 1).ToString(),
+                Dueno = cliente,
+                Articulo = textBoxArticulo.Text.Trim(),
+                Marca = textBoxMarca.Text.Trim(),
+                Modelo = textBoxModelo.Text.Trim(),
+                Observacion = textBoxObservaciones.Text.Trim(),
+            };
+        }
+
+        private bool ExisteClienteComprobacion(Cliente cliente)
+        {
+            bool existe = ClienteLogica.Existe(cliente.DNI);
+            bool exito = false;
+
+            if (existe)
+            {
+                exito = ClienteLogica.Editar(cliente);
+                if (exito)
+                    MessageBox.Show("Los datos del cliente fueron actualizados correctamente.", "Cliente actualizado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                else
+                    MessageBox.Show("No se pudo actualizar el cliente.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                exito = ClienteLogica.Guardar(cliente);
+                if (exito)
+                    MessageBox.Show("El cliente fue registrado correctamente.", "Cliente agregado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                else
+                    MessageBox.Show("No se pudo guardar el cliente.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            return existe;
+        }
+
+        private Orden CrearOrden(Cliente cliente)
+        {
+            return new Orden {
+                OrdenID = int.Parse(textBoxNroOrden.Text.Trim()),
+                Cliente = cliente,
+                Fecha_reparacion = dateTimePicker1.Value.ToString()
+            };
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            // Devuelve true si esta activado
+            CargarListaOrdenes();
+            CargarOrdenes(listaOrdenes);
+        }
+
+        private void toolStripButtonOpciones_Click(object sender, EventArgs e)
+        {
+            VentanaEmergenteDatos ventana = new VentanaEmergenteDatos(empresa);
+            ventana.StartPosition = FormStartPosition.CenterParent;
+            ventana.ShowDialog();
+            empresa = ventana.empresa;
+        }
+
+        private void CargarEmpresa()
+        {
+            if (ClienteLogica.Existe("1"))
+            {
+                empresa = ClienteLogica.TraerCliente("1");
+            }
+        }
+
+        private void textBoxDni_Leave(object sender, EventArgs e)
+        {
+            string dni = textBoxDni.Text;
+
+            if (!string.IsNullOrEmpty(dni))
+            {
+                if (ClienteLogica.Existe(dni))
+                {
+                    DialogResult enviar = MessageBox.Show("El Cliente ya existe. ¿Deseas autocompletar el formulario?", 
+                        "Enviar por correo", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                    if (enviar == DialogResult.Yes)
+                    {
+                        try
+                        {
+                            Cliente nuevoCliente = ClienteLogica.TraerCliente(dni);
+
+                            textBoxNombre.Text = nuevoCliente.Nombre;
+                            textBoxTelefono.Text = nuevoCliente.Telefono;
+                            textBoxEmail.Text = nuevoCliente.Email;
+                            textBoxDireccion.Text = nuevoCliente.Direccion;
+
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Error al completar los campos:\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                }
+
             }
         }
     }

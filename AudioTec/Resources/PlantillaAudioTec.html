@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Title of the document</title>
+    <style>
+        table.border {
+            border-collapse: collapse;
+        }
+
+            table.border th {
+                padding: 5px;
+                border: 1px solid black;
+            }
+
+            table.border td {
+                padding: 5px;
+                border: 1px solid black;
+            }
+    </style>
+</head>
+<body>
+    <table style="width:100%">
+        <tr>
+            <td style="width:40%">
+                <table>
+                    <tr><td align="center"><h4 style="margin:0px; font-size:40px">AudioTec</h4></td></tr>
+                </table>
+            </td>
+            <td style="width:30%" align="center" valign="top">
+            </td>
+            <td style="width:30%">
+                <table class="border" style="width:100%">
+                    <tr><td align="center" style="background-color:#D8D8D8">FACTURA</td></tr>
+                    <tr><td align="center">Nro: @FACTURANRO</td></tr>
+                    <tr><td align="center">Fecha: @FECHA</td></tr>
+                </table>
+            </td>
+        </tr>
+
+
+        <tr><td colspan="3" height="20"></td></tr>
+
+        <tr>
+            <td colspan="3">
+                <table class="border" style="width:100%">
+                    <tr>
+                        <td style="width:15%; background-color:#D8D8D8">Cliente</td>
+                        <td style="width:40%">@CLIENTE</td>
+                        <td style="width:15%; background-color:#D8D8D8">DNI</td>
+                        <td style="width:40%">@DNI</td>
+                    </tr>
+                </table>
+                <table class="border" style="width:100%">
+                    <tr>
+                        <td style="width:15%; background-color:#D8D8D8">Direccion</td>
+                        <td style="width:40%">@DIRECCION</td>
+                        <td style="width:15%; background-color:#D8D8D8">Email</td>
+                        <td style="width:40%">@EMAIL</td>
+                    </tr>
+                </table>
+                <table class="border" style="width:100%">
+                    <tr>
+                        <td style="width:15%; background-color:#D8D8D8">Telefono</td>
+                        <td style="width:40%">@TELEFONO</td>
+                        <td style="width:15%"></td>
+                        <td style="width:40%"></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <tr><td colspan="3" height="30"></td></tr>
+
+        <tr>
+            <td colspan="3">
+                <table class="border" style="width:100%;">
+                    <tr>
+                        <td style="width:20%; background-color:#D8D8D8">Articulo</td>
+                        <td style="width:80%">@ARTICULO</td>
+                    </tr>
+                </table>
+                <table class="border" style="width:100%">
+                    <tr>
+                        <th style="width:50%; background-color:#D8D8D8">Diagnositcos y Datos de la reparacion</th>
+                        <th style="width:50%; background-color:#D8D8D8">Repuestos</th>
+                    </tr>
+                    <tr>
+                        <td style="vertical-align: top;">@DIAGNOSTICO </td>
+                        <td style="vertical-align: top;">@REPUESTOS </td>
+                    </tr>
+                </table>
+                <table align="right" class="border" style="width:20%">
+                    <tr>
+                        <td align="left" style="width:5px">Total:</td>
+                        <td>@TOTAL</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <tr><td colspan="3" height="80"></td></tr>
+
+        <tr colspan="3" style="width:100%">
+            <td>
+                <table style="width:100%">
+                    <tr><td style="width:200px">@GARANTIA</td></tr>
+                    <tr><td style="width:200px">Direccion: @EMPRESADIRE</td></tr>
+                    <tr><td>Telefono: @EMPRESATELEFONO</td></tr>
+                    <tr><td style="width:200px">Email: @EMPRESAEMAIL</td></tr>
+                </table>
+            </td>
+        </tr>
+
+    </table>
+</body>
+</html>
