@@ -35,6 +35,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>windowtools_screen_ventan_10769.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="BouncyCastle.Crypto, Version=1.8.9.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
       <HintPath>..\packages\BouncyCastle.1.8.9\lib\BouncyCastle.Crypto.dll</HintPath>
@@ -116,6 +119,8 @@
     <Content Include="Iconos\imagenReparacion.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Iconos\windowtools_screen_ventan_10769.ico" />
+    <Content Include="windowtools_screen_ventan_10769.ico" />
     <EmbeddedResource Include="VentanaEmergenteDatos.resx">
       <DependentUpon>VentanaEmergenteDatos.cs</DependentUpon>
     </EmbeddedResource>
